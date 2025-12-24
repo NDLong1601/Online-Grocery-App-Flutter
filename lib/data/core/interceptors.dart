@@ -1,34 +1,50 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:online_groceries_store_app/core/logging/app_logger.dart';
+import 'package:online_groceries_store_app/data/datasources/local/local_storage.dart';
 
 @lazySingleton
 class NetworkInterceptor extends Interceptor {
-  NetworkInterceptor();
+  NetworkInterceptor(this._localStorage, this._loggger);
 
-  /// Implement local storage, app logger
+  final LocalStorage _localStorage;
+  final AppLogger _loggger;
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    /// get access token from local storage and add to header
-
-    debugPrint('Requesting [${options.method}] => PATH: ${options.path}');
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    final token = await _localStorage.getAccessToken();
+    if (token != null && token.isNotEmpty) {
+      options.headers['Authorization'] = 'Bearer $token';
+    }
+    _loggger.t(
+      'REQUEST ${options.method} ${options.uri}',
+      metadata: {
+        'headers': options.headers,
+        'query': options.queryParameters,
+        'data': options.data,
+      },
+    );
     handler.next(options);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    debugPrint(
-      'Response [${response.statusCode}] => PATH: ${response.requestOptions.path}',
+    _loggger.t(
+      'RESPONSE [${response.statusCode}] ${response.requestOptions.uri}',
+      metadata: {'data': response.data},
     );
     handler.next(response);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    debugPrint(
-      'Error [${err.response?.statusCode}] => PATH: ${err.requestOptions.path}',
+    _loggger.e(
+      'ERROR [${err.response?.statusCode}] ${err.requestOptions.uri}',
+      metadata: {'data': err.response?.data},
     );
-    handler.next(err);
+    super.onError(err, handler);
   }
 }

@@ -28,7 +28,12 @@ class ConsoleAppLogger implements AppLogger {
     StackTrace? stackTrace,
     Map<String, dynamic>? metadata,
   }) {
-    e(reason, error: error, stackTrace: stackTrace, metadata: metadata);
+    e(
+      'CRASH: $reason',
+      error: error,
+      stackTrace: stackTrace,
+      metadata: metadata,
+    );
   }
 
   @override
