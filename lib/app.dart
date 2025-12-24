@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_groceries_store_app/core/assets_gen/assets.gen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -19,6 +20,13 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Hello, World!')));
+    return Scaffold(
+      body: Column(
+        children: [
+          Center(child: Text('Hello, World!')),
+          Image.asset(Assets.images.imgApecoin.path),
+        ],
+      ),
+    );
   }
 }
