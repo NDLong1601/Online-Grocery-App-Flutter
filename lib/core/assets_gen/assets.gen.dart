@@ -17,102 +17,285 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
-  /// File path: assets/fonts/ReadexPro-Medium-w500.ttf
-  String get readexProMediumW500 => 'assets/fonts/ReadexPro-Medium-w500.ttf';
+  /// File path: assets/fonts/Gilroy-Regular-w400.otf
+  String get gilroyRegularW400 => 'assets/fonts/Gilroy-Regular-w400.otf';
 
-  /// File path: assets/fonts/ReadexPro-Regular-w400.ttf
-  String get readexProRegularW400 => 'assets/fonts/ReadexPro-Regular-w400.ttf';
-
-  /// File path: assets/fonts/ReadexPro-SemiBold-w600.ttf
-  String get readexProSemiBoldW600 =>
-      'assets/fonts/ReadexPro-SemiBold-w600.ttf';
+  /// File path: assets/fonts/Gilroy-SemiBold-w600.otf
+  String get gilroySemiBoldW600 => 'assets/fonts/Gilroy-SemiBold-w600.otf';
 
   /// List of all assets
-  List<String> get values => [
-    readexProMediumW500,
-    readexProRegularW400,
-    readexProSemiBoldW600,
-  ];
+  List<String> get values => [gilroyRegularW400, gilroySemiBoldW600];
 }
 
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
-  /// File path: assets/icons/ic_add.png
-  AssetGenImage get icAdd => const AssetGenImage('assets/icons/ic_add.png');
+  /// File path: assets/icons/ic_about.svg
+  SvgGenImage get icAbout => const SvgGenImage('assets/icons/ic_about.svg');
 
-  /// File path: assets/icons/ic_bonus.png
-  AssetGenImage get icBonus => const AssetGenImage('assets/icons/ic_bonus.png');
+  /// File path: assets/icons/ic_account.svg
+  SvgGenImage get icAccount => const SvgGenImage('assets/icons/ic_account.svg');
 
-  /// File path: assets/icons/ic_box.png
-  AssetGenImage get icBox => const AssetGenImage('assets/icons/ic_box.png');
+  /// File path: assets/icons/ic_address.svg
+  SvgGenImage get icAddress => const SvgGenImage('assets/icons/ic_address.svg');
 
-  /// File path: assets/icons/ic_chart.svg
-  SvgGenImage get icChart => const SvgGenImage('assets/icons/ic_chart.svg');
+  /// File path: assets/icons/ic_cart.svg
+  SvgGenImage get icCart => const SvgGenImage('assets/icons/ic_cart.svg');
 
-  /// File path: assets/icons/ic_favorites.png
-  AssetGenImage get icFavorites =>
-      const AssetGenImage('assets/icons/ic_favorites.png');
+  /// File path: assets/icons/ic_detail.svg
+  SvgGenImage get icDetail => const SvgGenImage('assets/icons/ic_detail.svg');
 
-  /// File path: assets/icons/ic_favourites.png
-  AssetGenImage get icFavourites =>
-      const AssetGenImage('assets/icons/ic_favourites.png');
+  /// File path: assets/icons/ic_explore.svg
+  SvgGenImage get icExplore => const SvgGenImage('assets/icons/ic_explore.svg');
 
-  /// File path: assets/icons/ic_filter.png
-  AssetGenImage get icFilter =>
-      const AssetGenImage('assets/icons/ic_filter.png');
+  /// File path: assets/icons/ic_facebook.svg
+  SvgGenImage get icFacebook =>
+      const SvgGenImage('assets/icons/ic_facebook.svg');
 
-  /// File path: assets/icons/ic_history.png
-  AssetGenImage get icHistory =>
-      const AssetGenImage('assets/icons/ic_history.png');
+  /// File path: assets/icons/ic_favourite.svg
+  SvgGenImage get icFavourite =>
+      const SvgGenImage('assets/icons/ic_favourite.svg');
+
+  /// File path: assets/icons/ic_fillter.svg
+  SvgGenImage get icFillter => const SvgGenImage('assets/icons/ic_fillter.svg');
+
+  /// File path: assets/icons/ic_google.svg
+  SvgGenImage get icGoogle => const SvgGenImage('assets/icons/ic_google.svg');
+
+  /// File path: assets/icons/ic_help.svg
+  SvgGenImage get icHelp => const SvgGenImage('assets/icons/ic_help.svg');
+
+  /// File path: assets/icons/ic_location.svg
+  SvgGenImage get icLocation =>
+      const SvgGenImage('assets/icons/ic_location.svg');
+
+  /// File path: assets/icons/ic_notifications.svg
+  SvgGenImage get icNotifications =>
+      const SvgGenImage('assets/icons/ic_notifications.svg');
+
+  /// File path: assets/icons/ic_orders.svg
+  SvgGenImage get icOrders => const SvgGenImage('assets/icons/ic_orders.svg');
+
+  /// File path: assets/icons/ic_payment.svg
+  SvgGenImage get icPayment => const SvgGenImage('assets/icons/ic_payment.svg');
+
+  /// File path: assets/icons/ic_promo.svg
+  SvgGenImage get icPromo => const SvgGenImage('assets/icons/ic_promo.svg');
+
+  /// File path: assets/icons/ic_share.svg
+  SvgGenImage get icShare => const SvgGenImage('assets/icons/ic_share.svg');
+
+  /// File path: assets/icons/ic_shop.svg
+  SvgGenImage get icShop => const SvgGenImage('assets/icons/ic_shop.svg');
 
   /// List of all assets
-  List<dynamic> get values => [
-    icAdd,
-    icBonus,
-    icBox,
-    icChart,
-    icFavorites,
-    icFavourites,
-    icFilter,
-    icHistory,
+  List<SvgGenImage> get values => [
+    icAbout,
+    icAccount,
+    icAddress,
+    icCart,
+    icDetail,
+    icExplore,
+    icFacebook,
+    icFavourite,
+    icFillter,
+    icGoogle,
+    icHelp,
+    icLocation,
+    icNotifications,
+    icOrders,
+    icPayment,
+    icPromo,
+    icShare,
+    icShop,
   ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/img_apecoin.png
-  AssetGenImage get imgApecoin =>
-      const AssetGenImage('assets/images/img_apecoin.png');
-
   /// File path: assets/images/img_apple.png
   AssetGenImage get imgApple =>
       const AssetGenImage('assets/images/img_apple.png');
 
-  /// File path: assets/images/img_avalanche.png
-  AssetGenImage get imgAvalanche =>
-      const AssetGenImage('assets/images/img_avalanche.png');
+  /// File path: assets/images/img_apple_juice.png
+  AssetGenImage get imgAppleJuice =>
+      const AssetGenImage('assets/images/img_apple_juice.png');
 
   /// File path: assets/images/img_avatar.png
   AssetGenImage get imgAvatar =>
       const AssetGenImage('assets/images/img_avatar.png');
 
-  /// File path: assets/images/img_bitcoin.png
-  AssetGenImage get imgBitcoin =>
-      const AssetGenImage('assets/images/img_bitcoin.png');
+  /// File path: assets/images/img_background.png
+  AssetGenImage get imgBackground =>
+      const AssetGenImage('assets/images/img_background.png');
 
-  /// File path: assets/images/img_bnb.png
-  AssetGenImage get imgBnb => const AssetGenImage('assets/images/img_bnb.png');
+  /// File path: assets/images/img_bakery_snacks.png
+  AssetGenImage get imgBakerySnacks =>
+      const AssetGenImage('assets/images/img_bakery_snacks.png');
+
+  /// File path: assets/images/img_banana.png
+  AssetGenImage get imgBanana =>
+      const AssetGenImage('assets/images/img_banana.png');
+
+  /// File path: assets/images/img_banner_1.png
+  AssetGenImage get imgBanner1 =>
+      const AssetGenImage('assets/images/img_banner_1.png');
+
+  /// File path: assets/images/img_beef.png
+  AssetGenImage get imgBeef =>
+      const AssetGenImage('assets/images/img_beef.png');
+
+  /// File path: assets/images/img_bell_pepper.png
+  AssetGenImage get imgBellPepper =>
+      const AssetGenImage('assets/images/img_bell_pepper.png');
+
+  /// File path: assets/images/img_beverages.png
+  AssetGenImage get imgBeverages =>
+      const AssetGenImage('assets/images/img_beverages.png');
+
+  /// File path: assets/images/img_carot.png
+  AssetGenImage get imgCarot =>
+      const AssetGenImage('assets/images/img_carot.png');
+
+  /// File path: assets/images/img_carot_bg.png
+  AssetGenImage get imgCarotBg =>
+      const AssetGenImage('assets/images/img_carot_bg.png');
+
+  /// File path: assets/images/img_chickend.png
+  AssetGenImage get imgChickend =>
+      const AssetGenImage('assets/images/img_chickend.png');
+
+  /// File path: assets/images/img_coca_cola.png
+  AssetGenImage get imgCocaCola =>
+      const AssetGenImage('assets/images/img_coca_cola.png');
+
+  /// File path: assets/images/img_diet_cook.png
+  AssetGenImage get imgDietCook =>
+      const AssetGenImage('assets/images/img_diet_cook.png');
+
+  /// File path: assets/images/img_done.png
+  AssetGenImage get imgDone =>
+      const AssetGenImage('assets/images/img_done.png');
+
+  /// File path: assets/images/img_egg_chicken_red.png
+  AssetGenImage get imgEggChickenRed =>
+      const AssetGenImage('assets/images/img_egg_chicken_red.png');
+
+  /// File path: assets/images/img_egg_chicken_white.png
+  AssetGenImage get imgEggChickenWhite =>
+      const AssetGenImage('assets/images/img_egg_chicken_white.png');
+
+  /// File path: assets/images/img_egg_noodles.png
+  AssetGenImage get imgEggNoodles =>
+      const AssetGenImage('assets/images/img_egg_noodles.png');
+
+  /// File path: assets/images/img_egg_noodles_1.png
+  AssetGenImage get imgEggNoodles1 =>
+      const AssetGenImage('assets/images/img_egg_noodles_1.png');
+
+  /// File path: assets/images/img_egg_pasta.png
+  AssetGenImage get imgEggPasta =>
+      const AssetGenImage('assets/images/img_egg_pasta.png');
+
+  /// File path: assets/images/img_five_start.png
+  AssetGenImage get imgFiveStart =>
+      const AssetGenImage('assets/images/img_five_start.png');
+
+  /// File path: assets/images/img_frash_fruit_vegetable.png
+  AssetGenImage get imgFrashFruitVegetable =>
+      const AssetGenImage('assets/images/img_frash_fruit_vegetable.png');
+
+  /// File path: assets/images/img_ginger.png
+  AssetGenImage get imgGinger =>
+      const AssetGenImage('assets/images/img_ginger.png');
+
+  /// File path: assets/images/img_location.png
+  AssetGenImage get imgLocation =>
+      const AssetGenImage('assets/images/img_location.png');
+
+  /// File path: assets/images/img_mask.png
+  AssetGenImage get imgMask =>
+      const AssetGenImage('assets/images/img_mask.png');
+
+  /// File path: assets/images/img_mayonneis_eggless.png
+  AssetGenImage get imgMayonneisEggless =>
+      const AssetGenImage('assets/images/img_mayonneis_eggless.png');
+
+  /// File path: assets/images/img_meat_and_fish.png
+  AssetGenImage get imgMeatAndFish =>
+      const AssetGenImage('assets/images/img_meat_and_fish.png');
+
+  /// File path: assets/images/img_oil_and_ghee.png
+  AssetGenImage get imgOilAndGhee =>
+      const AssetGenImage('assets/images/img_oil_and_ghee.png');
+
+  /// File path: assets/images/img_orange_juice.png
+  AssetGenImage get imgOrangeJuice =>
+      const AssetGenImage('assets/images/img_orange_juice.png');
+
+  /// File path: assets/images/img_order_fail.png
+  AssetGenImage get imgOrderFail =>
+      const AssetGenImage('assets/images/img_order_fail.png');
+
+  /// File path: assets/images/img_pepsi.png
+  AssetGenImage get imgPepsi =>
+      const AssetGenImage('assets/images/img_pepsi.png');
+
+  /// File path: assets/images/img_pulses.png
+  AssetGenImage get imgPulses =>
+      const AssetGenImage('assets/images/img_pulses.png');
+
+  /// File path: assets/images/img_sack_of_rice.png
+  AssetGenImage get imgSackOfRice =>
+      const AssetGenImage('assets/images/img_sack_of_rice.png');
+
+  /// File path: assets/images/img_splash.png
+  AssetGenImage get imgSplash =>
+      const AssetGenImage('assets/images/img_splash.png');
+
+  /// File path: assets/images/img_sprite.png
+  AssetGenImage get imgSprite =>
+      const AssetGenImage('assets/images/img_sprite.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    imgApecoin,
     imgApple,
-    imgAvalanche,
+    imgAppleJuice,
     imgAvatar,
-    imgBitcoin,
-    imgBnb,
+    imgBackground,
+    imgBakerySnacks,
+    imgBanana,
+    imgBanner1,
+    imgBeef,
+    imgBellPepper,
+    imgBeverages,
+    imgCarot,
+    imgCarotBg,
+    imgChickend,
+    imgCocaCola,
+    imgDietCook,
+    imgDone,
+    imgEggChickenRed,
+    imgEggChickenWhite,
+    imgEggNoodles,
+    imgEggNoodles1,
+    imgEggPasta,
+    imgFiveStart,
+    imgFrashFruitVegetable,
+    imgGinger,
+    imgLocation,
+    imgMask,
+    imgMayonneisEggless,
+    imgMeatAndFish,
+    imgOilAndGhee,
+    imgOrangeJuice,
+    imgOrderFail,
+    imgPepsi,
+    imgPulses,
+    imgSackOfRice,
+    imgSplash,
+    imgSprite,
   ];
 }
 
