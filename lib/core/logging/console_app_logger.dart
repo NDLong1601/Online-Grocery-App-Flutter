@@ -1,6 +1,30 @@
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
-import 'package:online_groceries_store_app/core/logging/app_logger.dart';
+import 'package:online_groceries_store_app/domain/core/app_logger.dart';
+
+/// A console-based implementation of the [AppLogger] interface that provides
+/// colorful, formatted logging output to the console using the Logger package.
+///
+/// This class is registered as a lazy singleton and implements comprehensive
+/// logging functionality with different log levels (trace, debug, info, warning,
+/// error, fatal) and crash reporting capabilities.
+///
+/// Features:
+/// - Colorful console output with emojis for better readability
+/// - Configurable stack trace display (2 method calls for normal logs, 8 for errors)
+/// - Timestamp formatting showing time and duration since start
+/// - Metadata support that gets appended to log messages
+/// - Pretty-printed output with 120 character line width
+///
+/// The logger automatically formats messages by mixing in any provided metadata
+/// and supports optional error objects and stack traces for debugging purposes.
+///
+/// Example usage:
+/// ```dart
+/// final logger = GetIt.instance<AppLogger>();
+/// logger.i('User logged in', metadata: {'userId': '123'});
+/// logger.e('Network error', error: exception, stackTrace: stackTrace);
+/// ```
 
 @LazySingleton(as: AppLogger)
 class ConsoleAppLogger implements AppLogger {

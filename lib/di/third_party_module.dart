@@ -6,6 +6,18 @@ import 'package:online_groceries_store_app/data/core/dio_logger.dart';
 import 'package:online_groceries_store_app/data/core/interceptors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// A dependency injection module that provides third-party dependencies for the application.
+///
+/// This module is responsible for configuring and providing instances of external
+/// libraries and services that are commonly used throughout the application.
+///
+/// Dependencies provided:
+/// - [Dio] HTTP client with pre-configured settings and interceptors
+/// - [SharedPreferences] for local data persistence
+/// - [FlutterSecureStorage] for secure local storage
+///
+/// The module uses the injectable package annotations to define how dependencies
+/// should be created and managed by the dependency injection container.
 @module
 abstract class ThirdPartyModule {
   Dio dio(

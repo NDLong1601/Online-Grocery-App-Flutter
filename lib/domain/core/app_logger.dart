@@ -1,3 +1,18 @@
+/// Abstract interface for application logging functionality.
+///
+/// Provides a standardized logging interface with different severity levels
+/// and crash reporting capabilities. Implementations should handle the actual
+/// logging mechanism (console, file, remote service, etc.).
+///
+/// All logging methods support optional error information, stack traces,
+/// and additional metadata for enhanced debugging and monitoring.
+///
+/// Example usage:
+/// ```dart
+/// final logger = MyLoggerImplementation();
+/// logger.i('User login successful', metadata: {'userId': 123});
+/// logger.e('Database connection failed', error: exception, stackTrace: trace);
+/// ```
 abstract class AppLogger {
   /// Log a message at level [Level.info]
   void i(

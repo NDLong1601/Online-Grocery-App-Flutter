@@ -39,7 +39,7 @@ class _ApiService implements ApiService {
     try {
       _value = LoginDto.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;

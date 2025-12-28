@@ -6,6 +6,13 @@ import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';
 
+/// Remote API service for handling network requests to the backend server.
+///
+/// This service provides methods for authentication and other API operations.
+/// Uses Dio for HTTP client functionality and is configured as a lazy singleton
+/// to ensure a single instance throughout the app lifecycle.
+///
+/// The service is automatically generated using the retrofit package annotations.
 @RestApi()
 @lazySingleton
 abstract class ApiService {

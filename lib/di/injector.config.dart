@@ -14,22 +14,29 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:online_groceries_store_app/core/env/app_config.dart' as _i428;
-import 'package:online_groceries_store_app/core/logging/app_logger.dart'
-    as _i678;
 import 'package:online_groceries_store_app/core/logging/console_app_logger.dart'
     as _i787;
 import 'package:online_groceries_store_app/data/core/interceptors.dart'
     as _i492;
-import 'package:online_groceries_store_app/data/datasources/local/local_storage.dart'
-    as _i76;
+import 'package:online_groceries_store_app/data/datasources/local/local_storage_datasource.dart'
+    as _i321;
+import 'package:online_groceries_store_app/data/datasources/local/local_storage_datasource_impl.dart'
+    as _i871;
 import 'package:online_groceries_store_app/data/datasources/remote/api_service.dart'
     as _i960;
 import 'package:online_groceries_store_app/data/repositories/auth_repository_impl.dart'
     as _i810;
+import 'package:online_groceries_store_app/data/repositories/local_storage_impl.dart'
+    as _i646;
+import 'package:online_groceries_store_app/di/domain_module.dart' as _i449;
 import 'package:online_groceries_store_app/di/env_module.dart' as _i528;
 import 'package:online_groceries_store_app/di/third_party_module.dart' as _i686;
+import 'package:online_groceries_store_app/domain/core/app_logger.dart'
+    as _i556;
 import 'package:online_groceries_store_app/domain/repositories/auth_repository.dart'
     as _i564;
+import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart'
+    as _i188;
 import 'package:online_groceries_store_app/domain/usecase/login_user_usecase.dart'
     as _i478;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
@@ -47,6 +54,7 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final thirdPartyModule = _$ThirdPartyModule();
     final envModule = _$EnvModule();
+    final domainModule = _$DomainModule();
     await gh.factoryAsync<_i460.SharedPreferences>(
       () => thirdPartyModule.prefs,
       preResolve: true,
@@ -54,7 +62,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i558.FlutterSecureStorage>(
       () => thirdPartyModule.secureStorage(),
     );
-    gh.lazySingleton<_i678.AppLogger>(() => _i787.ConsoleAppLogger());
+    gh.lazySingleton<_i556.AppLogger>(() => _i787.ConsoleAppLogger());
     gh.singleton<_i428.AppConfig>(
       () => envModule.devConfig(),
       registerFor: {_dev},
@@ -73,8 +81,8 @@ extension GetItInjectableX on _i174.GetIt {
       instanceName: 'baseUrl',
       registerFor: {_staging},
     );
-    gh.singleton<_i76.LocalStorage>(
-      () => _i76.LocalStorage(
+    gh.singleton<_i321.ILocalStorageDataSource>(
+      () => _i871.LocalStorageDataSourceImpl(
         gh<_i460.SharedPreferences>(),
         gh<_i558.FlutterSecureStorage>(),
       ),
@@ -88,10 +96,13 @@ extension GetItInjectableX on _i174.GetIt {
       instanceName: 'baseUrl',
       registerFor: {_prod},
     );
+    gh.singleton<_i188.ILocalStorage>(
+      () => _i646.LocalStorageImpl(gh<_i321.ILocalStorageDataSource>()),
+    );
     gh.lazySingleton<_i492.NetworkInterceptor>(
       () => _i492.NetworkInterceptor(
-        gh<_i76.LocalStorage>(),
-        gh<_i678.AppLogger>(),
+        gh<_i188.ILocalStorage>(),
+        gh<_i556.AppLogger>(),
       ),
     );
     gh.factory<_i361.Dio>(
@@ -106,7 +117,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i810.AuthRepositoryImpl(gh<_i960.ApiService>()),
     );
     gh.factory<_i478.LoginUserUsecase>(
-      () => _i478.LoginUserUsecase(gh<_i564.IAuthRepository>()),
+      () => domainModule.loginUserUsecase(gh<_i564.IAuthRepository>()),
     );
     return this;
   }
@@ -115,3 +126,5 @@ extension GetItInjectableX on _i174.GetIt {
 class _$ThirdPartyModule extends _i686.ThirdPartyModule {}
 
 class _$EnvModule extends _i528.EnvModule {}
+
+class _$DomainModule extends _i449.DomainModule {}

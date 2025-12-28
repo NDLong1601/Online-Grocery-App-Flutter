@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.8.1
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -71,7 +71,7 @@ dependencies:
   go_router: ^15.0.0
 
   #Deeplink
-  # chottu_link: ^1.0.14
+  chottu_link: ^1.0.9
 
   #Share
   share_plus: ^11.0.0
@@ -81,9 +81,9 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^5.0.0
-  injectable_generator: ^2.7.0
   build_runner: ^2.4.14
-  retrofit_generator: ^9.7.0
+  injectable_generator: ^2.7.0
+  retrofit_generator: ^9.1.7
   json_serializable: ^6.9.3
   freezed: ^2.5.8
   flutter_gen_runner: ^5.11.0

@@ -14,6 +14,22 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'login_dto.g.dart';
 
+/// Data transfer object representing a successful login response.
+///
+/// This class encapsulates all the user information and authentication tokens
+/// returned from the login API endpoint. It uses JSON serialization to convert
+/// between Dart objects and JSON data.
+///
+/// Example usage:
+/// ```dart
+/// final loginResponse = LoginDto.fromJson(jsonResponse);
+/// print('Welcome ${loginResponse.firstName}!');
+/// ```
+///
+/// The class includes:
+/// - User profile information (id, username, email, names, gender, image)
+/// - Authentication tokens (access token and refresh token)
+
 @JsonSerializable()
 class LoginDto {
   final int id;
