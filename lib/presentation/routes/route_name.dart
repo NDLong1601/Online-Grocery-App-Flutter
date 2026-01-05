@@ -17,8 +17,10 @@ class RouteName {
   /// Define path
   static const String splashPath = '/splash';
   static const String loginPath = '/login';
+  static const String settingPath = '/setting';
 
   /// Define route name
   static const String splashName = 'splash';
   static const String loginName = 'login';
+  static const String settingName = 'setting';
 }

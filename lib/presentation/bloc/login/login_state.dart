@@ -11,10 +11,9 @@ class LoginState extends Equatable {
     this.isSuccess = false,
   });
 
-  copyWith({
+  LoginState copyWith({
     bool? isLoading,
     String? apiErrorMessage,
-    bool? isHidePassword,
     bool? isSuccess,
   }) {
     return LoginState(

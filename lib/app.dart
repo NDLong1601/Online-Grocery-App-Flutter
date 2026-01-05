@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:online_groceries_store_app/presentation/screens/login/login_screen.dart';
+import 'package:online_groceries_store_app/presentation/routes/app_router.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const LoginScreen(),
+      routerConfig: AppRouter.router,
     );
   }
 }
@@ -21,11 +21,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Center(child: Text('Hello, World!')),
-        ],
-      ),
+      body: Column(children: [Center(child: Text('Hello, World!'))]),
     );
   }
 }

@@ -1,6 +1,4 @@
 PODS:
-  - chottu_link (1.0.19):
-    - Flutter
   - Flutter (1.0.0)
   - flutter_secure_storage (6.0.0):
     - Flutter
@@ -17,7 +15,6 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
-  - chottu_link (from `.symlinks/plugins/chottu_link/ios`)
   - Flutter (from `Flutter`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -26,8 +23,6 @@ DEPENDENCIES:
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
 
 EXTERNAL SOURCES:
-  chottu_link:
-    :path: ".symlinks/plugins/chottu_link/ios"
   Flutter:
     :path: Flutter
   flutter_secure_storage:
@@ -42,7 +37,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
 
 SPEC CHECKSUMS:
-  chottu_link: 7890d1a28c306c796c96d126c0bfc7ac0b1d4425
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   path_provider_foundation: bb55f6dbba17d0dccd6737fe6f7f34fbd0376880

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:online_groceries_store_app/di/injector.dart';
 import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart';
 import 'package:online_groceries_store_app/domain/usecase/login_user_usecase.dart';
@@ -7,6 +8,8 @@ import 'package:online_groceries_store_app/presentation/bloc/login/login_bloc.da
 import 'package:online_groceries_store_app/presentation/bloc/login/login_event.dart';
 import 'package:online_groceries_store_app/presentation/bloc/login/login_state.dart';
 import 'package:online_groceries_store_app/presentation/error/failure_mapper.dart';
+import 'package:online_groceries_store_app/presentation/routes/app_router.dart';
+import 'package:online_groceries_store_app/presentation/routes/route_name.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -31,8 +34,33 @@ class _LoginScreenView extends StatelessWidget {
   Widget build(BuildContext context) {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
+    final loginBloc = context.read<LoginBloc>();
     return Scaffold(
-      body: BlocBuilder<LoginBloc, LoginState>(
+      body: BlocConsumer<LoginBloc, LoginState>(
+        bloc: loginBloc,
+        listener: (context, state) {
+          if (state.isSuccess) {
+            context.goNamed(RouteName.settingName);
+          } else if (state.apiErrorMessage.isNotEmpty) {
+            /// show alert dialog
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Login Failed'),
+                content: Text(state.apiErrorMessage),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      context.pop();
+                      loginBloc.add(OnClearLoginErrorMessage());
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           if (state.isLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -59,7 +87,7 @@ class _LoginScreenView extends StatelessWidget {
               /// Button for login
               ElevatedButton(
                 onPressed: () {
-                  context.read<LoginBloc>().add(
+                  loginBloc.add(
                     OnLoginEvent(
                       usernameController.text,
                       passwordController.text,

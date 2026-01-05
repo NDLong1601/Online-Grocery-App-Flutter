@@ -50,7 +50,7 @@ dependencies:
   go_router: ^15.0.0
 
   #Deeplink
-  chottu_link: ^1.0.9
+  # chottu_link: ^1.0.9
 
   #Share
   share_plus: ^11.0.0
