@@ -8,7 +8,6 @@ import 'package:online_groceries_store_app/presentation/bloc/login/login_bloc.da
 import 'package:online_groceries_store_app/presentation/bloc/login/login_event.dart';
 import 'package:online_groceries_store_app/presentation/bloc/login/login_state.dart';
 import 'package:online_groceries_store_app/presentation/error/failure_mapper.dart';
-import 'package:online_groceries_store_app/presentation/routes/app_router.dart';
 import 'package:online_groceries_store_app/presentation/routes/route_name.dart';
 
 class LoginScreen extends StatelessWidget {

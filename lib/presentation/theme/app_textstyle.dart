@@ -17,32 +17,108 @@ import 'package:flutter/material.dart';
 /// ```
 class AppTextstyle {
   /// The default font family used throughout the application
-  static const String fontFamily = 'Poppins';
+  static const String fontFamily = 'Gilroy';
 
-  /// Small font size (12.0) - typically used for captions and helper text
-  static const double fontSizeSmall = 12.0;
+  // ==================== FontWeight.w600 (Semibold) ====================
 
-  /// Medium font size (16.0) - typically used for body text
-  static const double fontSizeMedium = 16.0;
-
-  /// Large font size (20.0) - typically used for headings and titles
-  static const double fontSizeLarge = 20.0;
-
-  /// Regular weight text style with medium font size (16.0)
-  ///
-  /// Uses FontWeight.w400 (normal) and is suitable for body text
-  static const tsRegularSize16Medium = TextStyle(
+  /// Semibold text style with size 48.0
+  static const tsSemiboldSize48 = TextStyle(
     fontFamily: fontFamily,
-    fontSize: fontSizeMedium,
+    fontSize: 48.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  /// Semibold text style with size 28.0
+  static const tsSemiboldSize28 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 28.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  /// Semibold text style with size 26.0
+  static const tsSemiboldSize26 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 26.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  /// Semibold text style with size 24.0
+  static const tsSemiboldSize24 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 24.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  /// Semibold text style with size 18.0
+  static const tsSemiboldSize18 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 18.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  /// Semibold text style with size 16.0
+  static const tsSemiboldSize16 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  /// Semibold text style with size 14.0
+  static const tsSemiboldSize14 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  /// Semibold text style with size 12.0
+  static const tsSemiboldSize12 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  /// Semibold text style with size 9.0
+  static const tsSemiboldSize9 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 9.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  // ==================== FontWeight.w400 (Regular) ====================
+
+  /// Regular text style with size 20.0
+  static const tsRegularSize20 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 20.0,
     fontWeight: FontWeight.w400,
   );
 
-  /// Bold text style with large font size (20.0)
-  ///
-  /// Uses FontWeight.w700 (bold) and is suitable for headings and titles
-  static const tsBoldSize20Large = TextStyle(
+  /// Regular text style with size 18.0
+  static const tsRegularSize18 = TextStyle(
     fontFamily: fontFamily,
-    fontSize: fontSizeLarge,
-    fontWeight: FontWeight.w700,
+    fontSize: 18.0,
+    fontWeight: FontWeight.w400,
+  );
+
+  /// Regular text style with size 16.0
+  static const tsRegularSize16 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w400,
+  );
+
+  /// Regular text style with size 14.0
+  static const tsRegularSize14 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+  );
+
+  /// Regular text style with size 13.0
+  static const tsRegularSize13 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 13.0,
+    fontWeight: FontWeight.w400,
   );
 }
+
