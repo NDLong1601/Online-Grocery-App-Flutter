@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:online_groceries_store_app/presentation/shared/app_button.dart';
+import 'package:online_groceries_store_app/presentation/shared/app_text.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_colors.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_padding.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_textstyle.dart';
 
 class CartItemCard extends StatelessWidget {
   final String title;
-  final String subtitle; // ví dụ: "1kg, Price"
+  final String subtitle;
   final String thumbnail;
   final int quantity;
-  final double price; // hiển thị bên phải
+  final double price;
   final VoidCallback onRemove;
   final VoidCallback onMinus;
   final VoidCallback onPlus;
@@ -94,8 +96,8 @@ class CartItemCard extends StatelessWidget {
 
                 const SizedBox(height: 4),
 
-                Text(
-                  subtitle,
+                AppText(
+                  text: subtitle,
                   style: AppTextstyle.tsRegularSize14.copyWith(
                     color: AppColors.grayText,
                   ),
@@ -106,10 +108,16 @@ class CartItemCard extends StatelessWidget {
                 // Quantity row + price
                 Row(
                   children: [
-                    _QtyButton(
+                    AppSquareIconButton(
                       icon: Icons.remove,
-                      onTap: onMinus,
-                      iconColor: AppColors.grayText.withValues(alpha: 0.7),
+                      onPressed: onMinus,
+                      size: 42,
+                      borderRadius: 16,
+                      backgroundColor: Colors.white,
+                      borderColor: AppColors.grayText.withValues(alpha: 0.20),
+                      iconColor: AppColors.grayText.withValues(alpha: 0.8),
+                      iconSize: 22,
+                      isEnabled: quantity > 1,
                     ),
                     const SizedBox(width: 10),
                     SizedBox(
@@ -124,14 +132,19 @@ class CartItemCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    _QtyButton(
+                    AppSquareIconButton(
                       icon: Icons.add,
-                      onTap: onPlus,
+                      onPressed: onPlus,
+                      size: 42,
+                      borderRadius: 16,
+                      backgroundColor: Colors.white,
+                      borderColor: AppColors.grayText.withValues(alpha: 0.20),
                       iconColor: AppColors.greenAccent,
+                      iconSize: 22,
                     ),
                     const Spacer(),
-                    Text(
-                      '\$${price.toStringAsFixed(2)}',
+                    AppText(
+                      text: '\$${price.toStringAsFixed(2)}',
                       style: AppTextstyle.tsSemiboldSize18.copyWith(
                         color: AppColors.darkText,
                       ),
@@ -142,38 +155,6 @@ class CartItemCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _QtyButton extends StatelessWidget {
-  final IconData icon;
-  final Color iconColor;
-  final VoidCallback onTap;
-
-  const _QtyButton({
-    required this.icon,
-    required this.iconColor,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(16),
-      onTap: onTap,
-      child: Container(
-        width: 42,
-        height: 42,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: AppColors.grayText.withValues(alpha: 0.20),
-            width: 1,
-          ),
-        ),
       ),
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:online_groceries_store_app/core/assets_gen/assets.gen.dart';
 import 'package:online_groceries_store_app/core/enums/button_style.dart';
-import 'package:online_groceries_store_app/presentation/screens/account/widget/setting_tile.dart';
+import 'package:online_groceries_store_app/presentation/shared/app_action_tile.dart';
 import 'package:online_groceries_store_app/presentation/shared/app_button.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_colors.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_padding.dart';
@@ -84,44 +84,47 @@ class AccountScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  SettingTile(
+                  AppActionTile(
                     title: 'Orders',
-                    icon: Assets.icons.icOrders,
+                    leading: Assets.icons.icOrders.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
-                  SettingTile(
-                    title: 'My details',
-                    icon: Assets.icons.icDetail,
+                  AppActionTile(
+                    title: 'My Details',
+                    leading: Assets.icons.icDetail.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
-                  SettingTile(
+                  AppActionTile(
                     title: 'Delivery Address',
-                    icon: Assets.icons.icAddress,
+                    leading: Assets.icons.icAddress.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
-                  SettingTile(
+                  AppActionTile(
                     title: 'Payment Methods',
-                    icon: Assets.icons.icPayment,
+                    leading: Assets.icons.icPayment.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
-                  SettingTile(
+                  AppActionTile(
                     title: 'Promo Card',
-                    icon: Assets.icons.icPromo,
+                    leading: Assets.icons.icPromo.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
-                  SettingTile(
+                  AppActionTile(
                     title: 'Notifecations',
-                    icon: Assets.icons.icNotifications,
+                    leading: Assets.icons.icNotifications.svg(
+                      width: 20,
+                      height: 20,
+                    ),
                     onTap: () {},
                   ),
-                  SettingTile(
+                  AppActionTile(
                     title: 'Help',
-                    icon: Assets.icons.icHelp,
+                    leading: Assets.icons.icHelp.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
-                  SettingTile(
-                    title: 'About',
-                    icon: Assets.icons.icAbout,
+                  AppActionTile(
+                    title: 'About ',
+                    leading: Assets.icons.icAbout.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
                 ],

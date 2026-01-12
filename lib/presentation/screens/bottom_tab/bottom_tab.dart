@@ -21,8 +21,18 @@ class BottomTab extends StatefulWidget {
 class _BottomTabState extends State<BottomTab> {
   int currentIndex = 0;
 
-  Color _iconColor(int index) {
-    return currentIndex == index ? AppColors.greenAccent : AppColors.darkText;
+  Widget _navIcon({required SvgGenImage icon, required Color color}) {
+    return SizedBox(
+      width: 24,
+      height: 24,
+      child: Center(
+        child: icon.svg(
+          fit: BoxFit.contain,
+          alignment: Alignment.center,
+          colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+        ),
+      ),
+    );
   }
 
   BottomNavigationBarItem _buildItem({
@@ -31,11 +41,8 @@ class _BottomTabState extends State<BottomTab> {
     required String label,
   }) {
     return BottomNavigationBarItem(
-      icon: icon.svg(
-        width: 24,
-        height: 24,
-        colorFilter: ColorFilter.mode(_iconColor(index), BlendMode.srcIn),
-      ),
+      icon: _navIcon(icon: icon, color: AppColors.darkText),
+      activeIcon: _navIcon(icon: icon, color: AppColors.greenAccent),
       label: label,
     );
   }

@@ -4,6 +4,7 @@ import 'package:online_groceries_store_app/presentation/routes/route_name.dart';
 import 'package:online_groceries_store_app/presentation/screens/bottom_tab/bottom_tab.dart';
 import 'package:online_groceries_store_app/presentation/screens/login/login_screen.dart';
 import 'package:online_groceries_store_app/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:online_groceries_store_app/presentation/screens/order%20accepted/order_accepted_screen.dart';
 import 'package:online_groceries_store_app/presentation/screens/signup/signup_screen.dart';
 import 'package:online_groceries_store_app/presentation/screens/splash/splash_screen.dart';
 
@@ -46,6 +47,13 @@ class AppRouter {
         path: RouteName.onboardingPath,
         name: RouteName.onboardingName,
         builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
+        path: RouteName.orderAcceptedPath,
+        name: RouteName.orderAcceptedName,
+        builder: (context, state) {
+          return OrderAcceptedScreen();
+        },
       ),
       GoRoute(
         path: RouteName.bottomTabPath,
