@@ -54,4 +54,7 @@ class AppColors {
 
   /// Value: #F3603F (Coral)
   static const Color coral = Color(0xFFF3603F);
+
+  /// Value: #FFFFFF (White)
+  static const Color white = Color(0xFFFFFFFF);
 }

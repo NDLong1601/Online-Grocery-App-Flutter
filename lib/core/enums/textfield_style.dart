@@ -8,3 +8,5 @@ enum AppTextFieldVariant {
   /// Kiểu search: nền xám, bo góc, không border
   search,
 }
+
+enum AppTextFieldValidationType { none, email, password }
