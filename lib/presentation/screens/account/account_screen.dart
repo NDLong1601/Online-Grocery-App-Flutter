@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:online_groceries_store_app/core/assets_gen/assets.gen.dart';
 import 'package:online_groceries_store_app/core/enums/button_style.dart';
 import 'package:online_groceries_store_app/core/extensions/context_extension.dart';
-import 'package:online_groceries_store_app/l10n/app_localizations.dart';
 import 'package:online_groceries_store_app/presentation/bloc/locale/locale_bloc.dart';
 import 'package:online_groceries_store_app/presentation/bloc/locale/locale_event.dart';
 import 'package:online_groceries_store_app/presentation/bloc/locale/locale_state.dart';
