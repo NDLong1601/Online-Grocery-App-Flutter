@@ -137,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
 
                 const SizedBox(height: 24),
-                AppButton(text: 'Sing Up', onPressed: () {}),
+                AppButton(text: 'Sign Up', onPressed: () {}),
                 const SizedBox(height: 20),
                 // Already have account? -> Login
                 Center(
@@ -153,7 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       InkWell(
                         onTap: () => context.goNamed(RouteName.loginName),
                         child: Text(
-                          'Signup',
+                          'Sign up',
                           style: AppTextstyle.tsSemiboldSize14.copyWith(
                             color: AppColors.greenAccent,
                           ),

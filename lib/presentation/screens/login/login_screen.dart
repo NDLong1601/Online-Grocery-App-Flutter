@@ -110,7 +110,7 @@ class _LoginScreenViewState extends State<_LoginScreenView> {
                         const SizedBox(height: 100),
 
                         AppText(
-                          text: 'Loging',
+                          text: 'Login',
                           style: AppTextstyle.tsSemiboldSize26.copyWith(
                             color: AppColors.darkText,
                           ),
@@ -188,7 +188,7 @@ class _LoginScreenViewState extends State<_LoginScreenView> {
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: "Singup",
+                                    text: "Sign up",
                                     style: AppTextstyle.tsSemiboldSize14
                                         .copyWith(color: AppColors.greenAccent),
                                   ),

@@ -110,7 +110,7 @@ class AccountScreen extends StatelessWidget {
                     onTap: () {},
                   ),
                   AppActionTile(
-                    title: 'Notifecations',
+                    title: 'Notifications',
                     leading: Assets.icons.icNotifications.svg(
                       width: 20,
                       height: 20,
@@ -123,7 +123,7 @@ class AccountScreen extends StatelessWidget {
                     onTap: () {},
                   ),
                   AppActionTile(
-                    title: 'About ',
+                    title: 'About',
                     leading: Assets.icons.icAbout.svg(width: 20, height: 20),
                     onTap: () {},
                   ),

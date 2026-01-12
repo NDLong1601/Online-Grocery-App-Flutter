@@ -42,7 +42,7 @@ class OrderAcceptedScreen extends StatelessWidget {
 
                 AppText(
                   text:
-                      'Your items has been placed and is on\nit\'s way to being processed',
+                      'Your items have been placed and is on\nit\'s way to being processed',
                   style: AppTextstyle.tsRegularSize16.copyWith(
                     color: AppColors.grayText,
                   ),

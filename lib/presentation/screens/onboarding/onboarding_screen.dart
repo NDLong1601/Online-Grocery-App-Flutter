@@ -37,7 +37,7 @@ class OnboardingScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 20, bottom: 40),
             child: AppText(
-              text: 'Ger your groceries in as fast as one hour',
+              text: 'Get your groceries in as fast as one hour',
               style: AppTextstyle.tsRegularSize16.copyWith(
                 color: AppColors.white.withValues(alpha: 0.7),
                 decoration: TextDecoration.none,

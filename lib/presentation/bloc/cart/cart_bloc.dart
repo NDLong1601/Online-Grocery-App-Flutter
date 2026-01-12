@@ -41,7 +41,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           errorMessage: _failureMapper.mapFailureToMessage(failure),
         ),
       ),
-      (data) => emit(state.copyWith(cart: data.currentCart)),
+      (data) => emit(state.copyWith(cart: data.currentCart, errorMessage: '')),
     );
   }
 }

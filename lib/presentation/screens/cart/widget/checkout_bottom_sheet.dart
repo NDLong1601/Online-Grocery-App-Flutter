@@ -111,7 +111,7 @@ class _CheckoutBottomSheet extends StatelessWidget {
 
             AppActionTile(
               title: 'Total Cost',
-              value: '\$13.97',
+              value: '\$${total.toStringAsFixed(2)}',
               isBoldValue: true,
               titleStyle: AppTextstyle.tsSemiboldSize18.copyWith(
                 color: AppColors.grayText,
