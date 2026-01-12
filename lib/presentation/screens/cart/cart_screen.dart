@@ -23,7 +23,7 @@ class CartScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => CartBloc(getIt<GetMyCartUsecase>(), FailureMapper(context))
         // ..add(CartStarted(userId)),
-        ..add(CartStarted(6)),
+        ..add(OnGetCartUserEvent(6)),
       child: const _CartView(),
     );
   }
@@ -73,6 +73,8 @@ class _CartView extends StatelessWidget {
                       thumbnail: p.thumbnail,
                       quantity: p.quantity,
                       price: p.price,
+
+                      /// Todo: implement onRemove, onMinus, onPlus with api call
                       onRemove: () {},
                       onMinus: () {},
                       onPlus: () {},

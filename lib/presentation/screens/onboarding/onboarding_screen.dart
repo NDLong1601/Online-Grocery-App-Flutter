@@ -2,6 +2,10 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:online_groceries_store_app/core/assets_gen/assets.gen.dart';
 import 'package:online_groceries_store_app/core/extensions/context_extension.dart';
+import 'package:online_groceries_store_app/di/injector.dart';
+import 'package:online_groceries_store_app/domain/core/app_logger.dart';
+import 'package:online_groceries_store_app/domain/entities/login_entity.dart';
+import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart';
 import 'package:online_groceries_store_app/presentation/routes/route_name.dart';
 import 'package:online_groceries_store_app/presentation/shared/app_background.dart';
 import 'package:online_groceries_store_app/presentation/shared/app_button.dart';
@@ -9,8 +13,49 @@ import 'package:online_groceries_store_app/presentation/shared/app_text.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_colors.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_textstyle.dart';
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  final ILocalStorage _localStorage = getIt<ILocalStorage>();
+  final AppLogger _logger = getIt<AppLogger>();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final accessToken = await _localStorage.getAccessToken();
+      accessToken.fold(
+        (failure) {
+          _logger.e(
+            "Error getting access token",
+            metadata: {'cause': failure.cause?.toString()},
+          );
+          return '';
+        },
+        (accessToken) {
+          if (accessToken != null && accessToken.isNotEmpty) {
+            final LoginEntity user = LoginEntity(
+              id: 6,
+              username: 'username',
+              email: "email@gmail.com",
+              fullName: 'fullName',
+              gender: 'gender',
+              image:
+                  'https://cdn.dummyjson.com/products/images/smartphones/Vivo%20S1/thumbnail.png',
+              accessToken: accessToken,
+              refreshToken: 'refreshToken',
+            );
+            context.goNamed(RouteName.bottomTabName, extra: user);
+          }
+        },
+      );
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

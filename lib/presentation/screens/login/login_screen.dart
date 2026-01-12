@@ -89,12 +89,12 @@ class _LoginScreenViewState extends State<_LoginScreenView> {
           }
         },
         builder: (context, state) {
-          return AppBackground(
-            padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
-            child: SafeArea(
-              child: Stack(
-                children: [
-                  SingleChildScrollView(
+          return Stack(
+            children: [
+              AppBackground(
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
+                child: SafeArea(
+                  child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -202,18 +202,17 @@ class _LoginScreenViewState extends State<_LoginScreenView> {
                       ],
                     ),
                   ),
-
-                  if (state.isLoading)
-                    Positioned.fill(
-                      child: Container(
-                        color: Colors.black.withValues(alpha: 0.08),
-                        alignment: Alignment.center,
-                        child: const CircularProgressIndicator(),
-                      ),
-                    ),
-                ],
+                ),
               ),
-            ),
+              if (state.isLoading)
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(),
+                  ),
+                ),
+            ],
           );
         },
       ),

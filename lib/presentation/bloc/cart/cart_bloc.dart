@@ -11,37 +11,53 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   CartBloc(this._getMyCartUsecase, this._failureMapper)
     : super(const CartState()) {
-    on<CartStarted>(_onStarted);
-    on<CartRefresh>(_onRefresh);
+    on<OnGetCartUserEvent>(_onStarted);
+    on<OnRefreshCartUserEvent>(_onRefresh);
   }
 
-  Future<void> _onStarted(CartStarted event, Emitter<CartState> emit) async {
-    emit(state.copyWith(isLoading: true, errorMessage: ''));
-    final result = await _getMyCartUsecase.call(
-      GetMyCartParams(userId: event.userId),
-    );
-    result.fold(
-      (failure) => emit(
-        state.copyWith(
-          isLoading: false,
-          errorMessage: _failureMapper.mapFailureToMessage(failure),
+  Future<void> _onStarted(
+    OnGetCartUserEvent event,
+    Emitter<CartState> emit,
+  ) async {
+    try {
+      emit(state.copyWith(isLoading: true, errorMessage: ''));
+      final result = await _getMyCartUsecase.call(
+        GetMyCartParams(userId: event.userId),
+      );
+      result.fold(
+        (failure) => emit(
+          state.copyWith(
+            isLoading: false,
+            errorMessage: _failureMapper.mapFailureToMessage(failure),
+          ),
         ),
-      ),
-      (data) => emit(state.copyWith(isLoading: false, cart: data.currentCart)),
-    );
+        (data) =>
+            emit(state.copyWith(isLoading: false, cart: data.currentCart)),
+      );
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
+    }
   }
 
-  Future<void> _onRefresh(CartRefresh event, Emitter<CartState> emit) async {
-    final result = await _getMyCartUsecase.call(
-      GetMyCartParams(userId: event.userId),
-    );
-    result.fold(
-      (failure) => emit(
-        state.copyWith(
-          errorMessage: _failureMapper.mapFailureToMessage(failure),
+  Future<void> _onRefresh(
+    OnRefreshCartUserEvent event,
+    Emitter<CartState> emit,
+  ) async {
+    try {
+      final result = await _getMyCartUsecase.call(
+        GetMyCartParams(userId: event.userId),
+      );
+      result.fold(
+        (failure) => emit(
+          state.copyWith(
+            errorMessage: _failureMapper.mapFailureToMessage(failure),
+          ),
         ),
-      ),
-      (data) => emit(state.copyWith(cart: data.currentCart, errorMessage: '')),
-    );
+        (data) =>
+            emit(state.copyWith(cart: data.currentCart, errorMessage: '')),
+      );
+    } catch (e) {
+      emit(state.copyWith(errorMessage: e.toString()));
+    }
   }
 }
