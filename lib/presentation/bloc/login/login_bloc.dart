@@ -57,7 +57,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               ),
             },
           );
-          emit(state.copyWith(isSuccess: true, isLoading: false));
+          emit(state.copyWith(isSuccess: true, isLoading: false, user: success));
         },
       );
     } catch (e) {

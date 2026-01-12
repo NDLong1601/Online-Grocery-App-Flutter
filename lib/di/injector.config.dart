@@ -26,6 +26,8 @@ import 'package:online_groceries_store_app/data/datasources/remote/api_service.d
     as _i960;
 import 'package:online_groceries_store_app/data/repositories/auth_repository_impl.dart'
     as _i810;
+import 'package:online_groceries_store_app/data/repositories/cart_repository_impl.dart'
+    as _i506;
 import 'package:online_groceries_store_app/data/repositories/local_storage_impl.dart'
     as _i646;
 import 'package:online_groceries_store_app/di/domain_module.dart' as _i449;
@@ -35,8 +37,12 @@ import 'package:online_groceries_store_app/domain/core/app_logger.dart'
     as _i556;
 import 'package:online_groceries_store_app/domain/repositories/auth_repository.dart'
     as _i564;
+import 'package:online_groceries_store_app/domain/repositories/cart_repository.dart'
+    as _i140;
 import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart'
     as _i188;
+import 'package:online_groceries_store_app/domain/usecase/get_my_cart_usecase.dart'
+    as _i233;
 import 'package:online_groceries_store_app/domain/usecase/login_user_usecase.dart'
     as _i478;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
@@ -113,8 +119,14 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.lazySingleton<_i960.ApiService>(() => _i960.ApiService(gh<_i361.Dio>()));
+    gh.lazySingleton<_i140.ICartRepository>(
+      () => _i506.CartRepositoryImpl(gh<_i960.ApiService>()),
+    );
     gh.lazySingleton<_i564.IAuthRepository>(
       () => _i810.AuthRepositoryImpl(gh<_i960.ApiService>()),
+    );
+    gh.factory<_i233.GetMyCartUsecase>(
+      () => domainModule.getMyCartUsecase(gh<_i140.ICartRepository>()),
     );
     gh.factory<_i478.LoginUserUsecase>(
       () => domainModule.loginUserUsecase(gh<_i564.IAuthRepository>()),

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:online_groceries_store_app/data/models/request/login_request.dart';
+import 'package:online_groceries_store_app/data/models/response/carts_by_user_response_dto.dart';
 import 'package:online_groceries_store_app/data/models/response/login_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -21,4 +22,7 @@ abstract class ApiService {
 
   @POST('/auth/login')
   Future<LoginDto> login(@Body() LoginRequest request);
+
+  @GET('/carts/user/{userId}')
+  Future<CartsByUserResponseDto> getCartsByUser(@Path('userId') int userId);
 }

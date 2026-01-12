@@ -28,6 +28,7 @@ class AppTextField extends StatefulWidget {
     this.maxLines = 1,
     this.minLines,
     this.textCapitalization = TextCapitalization.none,
+    this.autovalidateMode,
 
     // Obscure / password
     this.obscureText = false,
@@ -37,6 +38,12 @@ class AppTextField extends StatefulWidget {
     this.leading,
     this.trailing,
     this.onTapTrailing,
+
+    // ✅ Check (dùng helper bên ngoài)
+    this.enableCheck = false,
+    this.checkValidator,
+    this.showCheckWhenEmpty = false,
+    this.checkIcon,
 
     // Styling overrides (để mở rộng sau này)
     this.fillColor,
@@ -67,6 +74,7 @@ class AppTextField extends StatefulWidget {
   final int maxLines;
   final int? minLines;
   final TextCapitalization textCapitalization;
+  final AutovalidateMode? autovalidateMode;
 
   // Obscure / password
   final bool obscureText;
@@ -80,6 +88,18 @@ class AppTextField extends StatefulWidget {
 
   /// Optional action for trailing (nếu trailing là icon dạng button)
   final VoidCallback? onTapTrailing;
+
+  /// bật hiển thị icon check theo `checkValidator`
+  final bool enableCheck;
+
+  /// hàm check do bạn truyền từ helper: (text) => true/false
+  final bool Function(String value)? checkValidator;
+
+  /// nếu true: text rỗng vẫn cho phép check (thường để false)
+  final bool showCheckWhenEmpty;
+
+  /// icon check custom (mặc định Icons.check)
+  final Widget? checkIcon;
 
   // Styling overrides
   final Color? fillColor;
@@ -95,19 +115,84 @@ class AppTextField extends StatefulWidget {
 class _AppTextFieldState extends State<AppTextField> {
   late bool _obscure;
 
+  TextEditingController? _internalController;
+  TextEditingController? _listeningController;
+
+  bool _isValidForCheck = false;
+
+  TextEditingController get _effectiveController {
+    if (widget.controller != null) return widget.controller!;
+    return _internalController ??= TextEditingController(
+      text: widget.initialValue ?? '',
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     _obscure = widget.obscureText;
+
+    _attachListener();
+    _recalcCheck();
   }
 
   @override
   void didUpdateWidget(covariant AppTextField oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Nếu parent đổi obscureText, sync lại
+
+    // sync obscure
     if (oldWidget.obscureText != widget.obscureText) {
       _obscure = widget.obscureText;
     }
+
+    // controller changed => re-attach listener
+    if (oldWidget.controller != widget.controller) {
+      _detachListener(oldWidget.controller ?? _internalController);
+      _attachListener();
+      _recalcCheck();
+      setState(() {});
+    }
+  }
+
+  @override
+  void dispose() {
+    _detachListener(_listeningController);
+    _internalController?.dispose();
+    super.dispose();
+  }
+
+  void _attachListener() {
+    _listeningController = _effectiveController;
+    _listeningController?.addListener(_handleTextChanged);
+  }
+
+  void _detachListener(TextEditingController? controller) {
+    controller?.removeListener(_handleTextChanged);
+  }
+
+  void _handleTextChanged() {
+    final before = _isValidForCheck;
+    _recalcCheck();
+
+    if (before != _isValidForCheck) {
+      setState(() {});
+    }
+  }
+
+  void _recalcCheck() {
+    if (!widget.enableCheck || widget.checkValidator == null) {
+      _isValidForCheck = false;
+      return;
+    }
+
+    final text = _effectiveController.text;
+
+    if (text.trim().isEmpty && !widget.showCheckWhenEmpty) {
+      _isValidForCheck = false;
+      return;
+    }
+
+    _isValidForCheck = widget.checkValidator!(text);
   }
 
   @override
@@ -122,7 +207,7 @@ class _AppTextFieldState extends State<AppTextField> {
     final fillColor =
         widget.fillColor ??
         (widget.variant == AppTextFieldVariant.search
-            ? const Color(0xFFF2F3F2) // giống search field trong hình
+            ? const Color(0xFFF2F3F2)
             : Colors.transparent);
 
     final hintStyle = AppTextstyle.tsRegularSize14.copyWith(
@@ -133,7 +218,7 @@ class _AppTextFieldState extends State<AppTextField> {
       color: AppColors.darkText,
     );
 
-    final labelStyle = AppTextstyle.tsRegularSize14.copyWith(
+    final labelStyle = AppTextstyle.tsSemiboldSize16.copyWith(
       color: AppColors.grayText,
     );
 
@@ -180,16 +265,20 @@ class _AppTextFieldState extends State<AppTextField> {
     final suffix = _buildSuffix();
 
     final field = TextFormField(
-      controller: widget.controller,
+      controller: _effectiveController,
       focusNode: widget.focusNode,
-      initialValue: widget.controller == null ? widget.initialValue : null,
       enabled: widget.enabled,
       readOnly: widget.readOnly,
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
-      onChanged: widget.onChanged,
+      onChanged: (value) {
+        widget.onChanged?.call(value);
+        // update check realtime
+        _handleTextChanged();
+      },
       onFieldSubmitted: widget.onSubmitted,
       validator: widget.validator,
+      autovalidateMode: widget.autovalidateMode,
       autofillHints: widget.autofillHints,
       maxLines: widget.obscureText ? 1 : widget.maxLines,
       minLines: widget.minLines,
@@ -211,7 +300,7 @@ class _AppTextFieldState extends State<AppTextField> {
 
         contentPadding: widget.contentPadding ?? defaultPadding,
 
-        // Leading (search icon / flag+code...)
+        // Leading
         prefixIcon: widget.leading == null
             ? null
             : Padding(
@@ -220,8 +309,9 @@ class _AppTextFieldState extends State<AppTextField> {
               ),
         prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
 
-        // Suffix (password toggle / custom trailing)
+        // Suffix
         suffixIcon: suffix,
+        suffixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
       ),
     );
 
@@ -240,73 +330,56 @@ class _AppTextFieldState extends State<AppTextField> {
   }
 
   Widget? _buildSuffix() {
+    final List<Widget> items = [];
+
     // 1) Password toggle
     if (widget.enableObscureToggle) {
-      return IconButton(
-        onPressed: () => setState(() => _obscure = !_obscure),
-        icon: Icon(
-          _obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-          color: AppColors.grayText,
+      items.add(
+        IconButton(
+          onPressed: () => setState(() => _obscure = !_obscure),
+          icon: Icon(
+            _obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+            color: AppColors.grayText,
+          ),
         ),
       );
     }
 
-    // 2) Custom trailing
-    if (widget.trailing != null) {
-      if (widget.onTapTrailing != null) {
-        return IconButton(
-          onPressed: widget.onTapTrailing,
-          icon: widget.trailing!,
-        );
-      }
-      return Padding(
-        padding: const EdgeInsets.only(right: AppPadding.p8),
-        child: widget.trailing,
+    // 2) Check icon (from helper)
+    if (widget.enableCheck && widget.checkValidator != null && _isValidForCheck) {
+      items.add(
+        Padding(
+          padding: const EdgeInsets.only(right: AppPadding.p8),
+          child: widget.checkIcon ??
+              Icon(Icons.check, color: AppColors.greenAccent),
+        ),
       );
     }
 
-    return null;
+    // 3) Custom trailing
+    if (widget.trailing != null) {
+      if (widget.onTapTrailing != null) {
+        items.add(
+          IconButton(
+            onPressed: widget.onTapTrailing,
+            icon: widget.trailing!,
+          ),
+        );
+      } else {
+        items.add(
+          Padding(
+            padding: const EdgeInsets.only(right: AppPadding.p8),
+            child: widget.trailing!,
+          ),
+        );
+      }
+    }
+
+    if (items.isEmpty) return null;
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: items,
+    );
   }
 }
-
-/// ==== Search Store ====
-/// AppTextField(
-//   variant: AppTextFieldVariant.search,
-//   hintText: 'Search Store',
-//   leading: Icon(Icons.search, color: AppColors.grayText),
-//   onChanged: (value) {
-//     // search...
-//   },
-// )
-
-// ==== Phone code + flag +880 ====
-// AppTextField(
-//   variant: AppTextFieldVariant.underline,
-//   keyboardType: TextInputType.phone,
-//   hintText: 'Phone Number',
-//   leading: Row(
-//     mainAxisSize: MainAxisSize.min,
-//     children: [
-//       // Bạn thay bằng Image.asset / SvgPicture tuỳ project
-//       const Text('🇧🇩', style: TextStyle(fontSize: 18)),
-//       const SizedBox(width: 8),
-//       Text('+880', style: AppTextstyle.tsRegularSize16),
-//     ],
-//   ),
-// )
-
-/// ==== Email / Password ====
-// AppTextField(
-//   variant: AppTextFieldVariant.underline,
-//   labelText: 'Email',
-//   hintText: 'imshuvo97@gmail.com',
-//   keyboardType: TextInputType.emailAddress,
-// );
-
-// AppTextField(
-//   variant: AppTextFieldVariant.underline,
-//   labelText: 'Password',
-//   hintText: '••••••••',
-//   obscureText: true,
-//   enableObscureToggle: true,
-// );

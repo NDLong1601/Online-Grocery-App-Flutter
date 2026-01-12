@@ -1,0 +1,6 @@
+import 'package:online_groceries_store_app/domain/core/result.dart';
+import 'package:online_groceries_store_app/domain/entities/carts_by_user_entity.dart';
+
+abstract class ICartRepository {
+  ResultFuture<CartsByUserEntity> getMyCart({required int userId});
+}

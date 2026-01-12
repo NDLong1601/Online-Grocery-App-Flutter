@@ -42,6 +42,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_cart.svg
   SvgGenImage get icCart => const SvgGenImage('assets/icons/ic_cart.svg');
 
+  /// File path: assets/icons/ic_close.svg
+  SvgGenImage get icClose => const SvgGenImage('assets/icons/ic_close.svg');
+
   /// File path: assets/icons/ic_detail.svg
   SvgGenImage get icDetail => const SvgGenImage('assets/icons/ic_detail.svg');
 
@@ -94,6 +97,7 @@ class $AssetsIconsGen {
     icAccount,
     icAddress,
     icCart,
+    icClose,
     icDetail,
     icExplore,
     icFacebook,
@@ -230,6 +234,10 @@ class $AssetsImagesGen {
   AssetGenImage get imgOilAndGhee =>
       const AssetGenImage('assets/images/img_oil_and_ghee.png');
 
+  /// File path: assets/images/img_onboarding.png
+  AssetGenImage get imgOnboarding =>
+      const AssetGenImage('assets/images/img_onboarding.png');
+
   /// File path: assets/images/img_orange_juice.png
   AssetGenImage get imgOrangeJuice =>
       const AssetGenImage('assets/images/img_orange_juice.png');
@@ -289,6 +297,7 @@ class $AssetsImagesGen {
     imgMayonneisEggless,
     imgMeatAndFish,
     imgOilAndGhee,
+    imgOnboarding,
     imgOrangeJuice,
     imgOrderFail,
     imgPepsi,
