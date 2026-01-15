@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:online_groceries_store_app/data/models/request/login_request.dart';
 import 'package:online_groceries_store_app/data/models/response/carts_by_user_response_dto.dart';
 import 'package:online_groceries_store_app/data/models/response/login_dto.dart';
+import 'package:online_groceries_store_app/data/models/response/single_cart_response_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';
@@ -25,4 +26,7 @@ abstract class ApiService {
 
   @GET('/carts/user/{userId}')
   Future<CartsByUserResponseDto> getCartsByUser(@Path('userId') int userId);
+
+  @GET('/carts/{id}')
+  Future<SingleCartResponseDto> getSingleCart(@Path('id') int cartId);
 }

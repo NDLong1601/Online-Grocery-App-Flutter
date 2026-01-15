@@ -43,6 +43,8 @@ import 'package:online_groceries_store_app/domain/repositories/local_storage_rep
     as _i188;
 import 'package:online_groceries_store_app/domain/usecase/get_my_cart_usecase.dart'
     as _i233;
+import 'package:online_groceries_store_app/domain/usecase/get_single_cart_usecase.dart'
+    as _i779;
 import 'package:online_groceries_store_app/domain/usecase/login_user_usecase.dart'
     as _i478;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
@@ -127,6 +129,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i233.GetMyCartUsecase>(
       () => domainModule.getMyCartUsecase(gh<_i140.ICartRepository>()),
+    );
+    gh.factory<_i779.GetSingleCartUsecase>(
+      () => domainModule.getSingleCartUsecase(gh<_i140.ICartRepository>()),
     );
     gh.factory<_i478.LoginUserUsecase>(
       () => domainModule.loginUserUsecase(gh<_i564.IAuthRepository>()),

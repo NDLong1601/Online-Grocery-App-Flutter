@@ -1,6 +1,7 @@
 import 'package:online_groceries_store_app/data/models/response/cart_product_dto.dart';
 import 'package:online_groceries_store_app/data/models/response/cart_dto.dart';
 import 'package:online_groceries_store_app/data/models/response/carts_by_user_response_dto.dart';
+import 'package:online_groceries_store_app/data/models/response/single_cart_response_dto.dart';
 import 'package:online_groceries_store_app/domain/entities/cart_product_entity.dart';
 import 'package:online_groceries_store_app/domain/entities/cart_entity.dart';
 import 'package:online_groceries_store_app/domain/entities/carts_by_user_entity.dart';
@@ -31,4 +32,13 @@ extension CartMapper on CartDto {
 extension CartsByUserMapper on CartsByUserResponseDto {
   CartsByUserEntity toEntity() =>
       CartsByUserEntity(carts: carts.map((e) => e.toEntity()).toList());
+}
+
+extension SingleCartMapper on SingleCartResponseDto {
+  CartEntity toEntity() => CartEntity(
+    id: id,
+    userId: userId,
+    products: products.map((e) => e.toEntity()).toList(),
+    discountedTotal: discountedTotal,
+  );
 }

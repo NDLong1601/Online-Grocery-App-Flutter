@@ -8,6 +8,9 @@ import 'package:online_groceries_store_app/presentation/bloc/locale/locale_event
 import 'package:online_groceries_store_app/presentation/bloc/locale/locale_state.dart';
 import 'package:online_groceries_store_app/presentation/routes/app_router.dart';
 
+////
+/// Khả năng / trình độ của bản thân = AI Power * Your Knowledge * Prompting Skill
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
