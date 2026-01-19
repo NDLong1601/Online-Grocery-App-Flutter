@@ -1,24 +1,15 @@
-import 'package:equatable/equatable.dart';
-import 'package:injectable/injectable.dart';
 import 'package:online_groceries_store_app/domain/core/result.dart';
 import 'package:online_groceries_store_app/domain/core/usecase.dart';
 import 'package:online_groceries_store_app/domain/entities/product_entity.dart';
 import 'package:online_groceries_store_app/domain/repositories/product_repository.dart';
-
-/// Parameters for GetProductsByCategoryUsecase
-class GetProductsByCategoryParams extends Equatable {
-  final String categorySlug;
-
-  const GetProductsByCategoryParams({required this.categorySlug});
-
-  @override
-  List<Object?> get props => [categorySlug];
-}
+import 'package:online_groceries_store_app/domain/value_object/get_products_by_category_params.dart';
 
 /// Use case for getting products by category
 ///
 /// This use case retrieves all products belonging to a specific category
 /// from the repository.
+///
+/// Responsibility: Fetch products filtered by category
 ///
 /// Example usage:
 /// ```dart
@@ -30,8 +21,7 @@ class GetProductsByCategoryParams extends Equatable {
 ///   (products) => displayProducts(products),
 /// );
 /// ```
-@injectable
-class GetProductsByCategoryUsecase
+final class GetProductsByCategoryUsecase
     extends UsecaseAsync<List<ProductEntity>, GetProductsByCategoryParams> {
   final IProductRepository _repository;
 

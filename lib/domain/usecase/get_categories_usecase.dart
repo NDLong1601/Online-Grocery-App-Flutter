@@ -1,4 +1,3 @@
-import 'package:injectable/injectable.dart';
 import 'package:online_groceries_store_app/domain/core/result.dart';
 import 'package:online_groceries_store_app/domain/core/usecase.dart';
 import 'package:online_groceries_store_app/domain/entities/category_entity.dart';
@@ -8,6 +7,8 @@ import 'package:online_groceries_store_app/domain/repositories/category_reposito
 ///
 /// This use case retrieves all available product categories from the repository.
 /// It doesn't require any parameters and returns a list of categories.
+///
+/// Responsibility: Fetch all available categories
 ///
 /// Example usage:
 /// ```dart
@@ -23,8 +24,7 @@ import 'package:online_groceries_store_app/domain/repositories/category_reposito
 /// * [CategoryEntity] - The entity returned for each category
 /// * [NoParams] - Indicates this use case requires no parameters
 /// * [ICategoryRepository] - The repository interface for category operations
-@injectable
-class GetCategoriesUsecase
+final class GetCategoriesUsecase
     extends UsecaseAsync<List<CategoryEntity>, NoParams> {
   final ICategoryRepository _repository;
 

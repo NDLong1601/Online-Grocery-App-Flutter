@@ -8,7 +8,9 @@ import 'package:online_groceries_store_app/domain/value_object/add_to_cart_param
 ///
 /// This use case handles the business logic for adding products to the cart,
 /// including validation and calling the repository.
-class AddToCartUsecase extends UsecaseAsync<CartEntity, AddToCartParams> {
+///
+/// Responsibility: Add a product to an existing cart
+final class AddToCartUsecase extends UsecaseAsync<CartEntity, AddToCartParams> {
   final ICartRepository _cartRepository;
 
   AddToCartUsecase(this._cartRepository);

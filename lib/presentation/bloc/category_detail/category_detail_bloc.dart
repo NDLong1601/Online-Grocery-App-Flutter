@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:online_groceries_store_app/domain/usecase/create_cart_usecase.dart';
 import 'package:online_groceries_store_app/domain/usecase/get_products_by_category_usecase.dart';
 import 'package:online_groceries_store_app/domain/value_object/create_cart_params.dart';
+import 'package:online_groceries_store_app/domain/value_object/get_products_by_category_params.dart';
 import 'package:online_groceries_store_app/presentation/bloc/category_detail/category_detail_event.dart';
 import 'package:online_groceries_store_app/presentation/bloc/category_detail/category_detail_state.dart';
 import 'package:online_groceries_store_app/presentation/error/failure_mapper.dart';

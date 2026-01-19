@@ -1,4 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chottu_link/chottu_link.dart';
+import 'package:chottu_link/dynamic_link/cl_dynamic_link_behaviour.dart';
+import 'package:chottu_link/dynamic_link/cl_dynamic_link_parameters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:online_groceries_store_app/core/enums/button_style.dart';
@@ -17,6 +20,7 @@ import 'package:online_groceries_store_app/presentation/shared/app_text.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_colors.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_padding.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_textstyle.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final ProductEntity product;
@@ -153,7 +157,11 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                 },
               ),
             ),
-            if (images.length > 1) ImageIndicator(length: images.length, currentImageIndex: _currentImageIndex),
+            if (images.length > 1)
+              ImageIndicator(
+                length: images.length,
+                currentImageIndex: _currentImageIndex,
+              ),
             SizedBox(height: AppPadding.p16),
           ],
         ),
@@ -176,7 +184,52 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
           ),
           IconButton(
             onPressed: () {
-              // Share product
+              // Share product by chottu link
+              /// Create dynamic link parameters
+              final parameters = CLDynamicLinkParameters(
+                link: Uri.parse(
+                  "https://finn1601.chottu.link/product/${widget.product.id}",
+                ), // Target deep link
+                domain: "finn1601.chottu.link", // Your ChottuLink domain
+                // Set behavior for Android & iOS
+                androidBehaviour: CLDynamicLinkBehaviour.app,
+                iosBehaviour: CLDynamicLinkBehaviour.app,
+
+                // // UTM Tracking (for analytics)
+                // utmCampaign: "exampleCampaign",
+                // utmMedium: "exampleMedium",
+                // utmSource: "exampleSource",
+                // utmContent: "exampleContent",
+                // utmTerm: "exampleTerm",
+
+                // Optional metadata
+                linkName: "linkname",
+                selectedPath: "customPath",
+                socialTitle: "Social Title",
+                socialDescription: "Description to show when shared",
+                socialImageUrl:
+                    "https://dummyjson.com/products/category/home-decoration", // Must be a valid image URL
+              );
+
+              ChottuLink.createDynamicLink(
+                parameters: parameters,
+                onSuccess: (link) {
+                  debugPrint("✅ Shared Link: $link");
+
+                  /// Share the link
+                  SharePlus.instance.share(ShareParams(uri: Uri.parse(link)));
+                },
+                onError: (error) {
+                  debugPrint("❌ Error creating link: ${error.description}");
+                  SharePlus.instance.share(
+                    ShareParams(
+                      uri: Uri.parse(
+                        "https://finn1601.chottu.link/product/${widget.product.id}",
+                      ),
+                    ),
+                  );
+                },
+              );
             },
             icon: const Icon(Icons.ios_share, color: AppColors.darkText),
           ),

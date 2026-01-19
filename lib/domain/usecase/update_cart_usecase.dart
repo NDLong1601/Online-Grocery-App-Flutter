@@ -1,4 +1,3 @@
-import 'package:injectable/injectable.dart';
 import 'package:online_groceries_store_app/domain/core/result.dart';
 import 'package:online_groceries_store_app/domain/core/usecase.dart';
 import 'package:online_groceries_store_app/domain/entities/cart_entity.dart';
@@ -9,8 +8,10 @@ import 'package:online_groceries_store_app/domain/value_object/update_cart_param
 ///
 /// This use case handles the business logic for updating product quantities
 /// in the cart, including removing products when quantity is 0.
-@lazySingleton
-class UpdateCartUsecase extends UsecaseAsync<CartEntity, UpdateCartParams> {
+///
+/// Responsibility: Update quantities of products in an existing cart
+final class UpdateCartUsecase
+    extends UsecaseAsync<CartEntity, UpdateCartParams> {
   final ICartRepository _cartRepository;
 
   UpdateCartUsecase(this._cartRepository);

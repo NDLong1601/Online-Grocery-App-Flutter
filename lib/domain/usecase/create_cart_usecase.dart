@@ -8,7 +8,10 @@ import 'package:online_groceries_store_app/domain/value_object/create_cart_param
 ///
 /// This use case is used when user doesn't have any existing cart
 /// and wants to add a product to cart for the first time.
-class CreateCartUsecase extends UsecaseAsync<CartEntity, CreateCartParams> {
+///
+/// Responsibility: Create a new cart for a user with initial product
+final class CreateCartUsecase
+    extends UsecaseAsync<CartEntity, CreateCartParams> {
   final ICartRepository _cartRepository;
 
   CreateCartUsecase(this._cartRepository);

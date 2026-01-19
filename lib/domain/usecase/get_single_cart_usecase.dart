@@ -4,7 +4,12 @@ import 'package:online_groceries_store_app/domain/entities/cart_entity.dart';
 import 'package:online_groceries_store_app/domain/repositories/cart_repository.dart';
 import 'package:online_groceries_store_app/domain/value_object/get_single_cart_params.dart';
 
-class GetSingleCartUsecase
+/// Use case for getting a specific cart by its ID
+///
+/// This use case retrieves detailed information about a single cart.
+///
+/// Responsibility: Fetch a single cart by cart ID
+final class GetSingleCartUsecase
     extends UsecaseAsync<CartEntity, GetSingleCartParams> {
   final ICartRepository _cartRepository;
 

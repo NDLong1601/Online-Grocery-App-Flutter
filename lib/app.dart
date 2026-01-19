@@ -1,3 +1,4 @@
+import 'package:chottu_link/chottu_link.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:online_groceries_store_app/di/injector.dart';
@@ -23,8 +24,28 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AppEntryWidget extends StatelessWidget {
+class AppEntryWidget extends StatefulWidget {
   const AppEntryWidget({super.key});
+
+  @override
+  State<AppEntryWidget> createState() => _AppEntryWidgetState();
+}
+
+class _AppEntryWidgetState extends State<AppEntryWidget> {
+  @override
+  void initState() {
+    super.initState();
+    _listenToDeepLinks();
+  }
+
+  void _listenToDeepLinks() {
+    /// 🔗 Listen for incoming dynamic links
+    ChottuLink.onLinkReceived.listen((String link) {
+      debugPrint(" ✅ Link Received: $link");
+
+      /// Tip: ➡️ Navigate to a specific page or take action based on the link
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

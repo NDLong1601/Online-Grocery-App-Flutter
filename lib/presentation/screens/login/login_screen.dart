@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:online_groceries_store_app/core/assets_gen/assets.gen.dart';
 import 'package:online_groceries_store_app/core/enums/textfield_style.dart';
 import 'package:online_groceries_store_app/di/injector.dart';
+import 'package:online_groceries_store_app/domain/core/app_logger.dart';
 import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart';
 import 'package:online_groceries_store_app/domain/usecase/login_user_usecase.dart';
 import 'package:online_groceries_store_app/presentation/bloc/login/login_bloc.dart';
@@ -29,6 +30,7 @@ class LoginScreen extends StatelessWidget {
         getIt<LoginUserUsecase>(),
         getIt<ILocalStorage>(),
         FailureMapper(context),
+        getIt<AppLogger>(),
       ),
       child: const _LoginScreenView(),
     );

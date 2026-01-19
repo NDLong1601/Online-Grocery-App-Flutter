@@ -10,6 +10,8 @@ import 'package:online_groceries_store_app/domain/repositories/auth_repository.d
 /// repository. It takes [LoginCredentials] as input and returns a [LoginEntity]
 /// wrapped in a [ResultFuture].
 ///
+/// Responsibility: Authenticate user with username and password
+///
 /// Example usage:
 /// ```dart
 /// final loginUsecase = LoginUserUsecase(authRepository);

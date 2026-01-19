@@ -4,8 +4,15 @@ import 'package:online_groceries_store_app/domain/entities/carts_by_user_entity.
 import 'package:online_groceries_store_app/domain/repositories/cart_repository.dart';
 import 'package:online_groceries_store_app/domain/value_object/get_my_cart_params.dart';
 
-class GetMyCartUsecase extends UsecaseAsync<CartsByUserEntity, GetMyCartParams> {
+/// Use case for getting all carts belonging to a user
+///
+/// This use case retrieves all carts associated with a specific user ID.
+///
+/// Responsibility: Fetch all carts for a given user
+final class GetMyCartUsecase
+    extends UsecaseAsync<CartsByUserEntity, GetMyCartParams> {
   final ICartRepository _cartRepository;
+
   GetMyCartUsecase(this._cartRepository);
 
   @override
