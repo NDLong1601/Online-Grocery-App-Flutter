@@ -32,29 +32,23 @@ class _FavouriteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      // backgroundColor: AppColors.backgroundColor,
+      appBar: AppBar(
+        title: Text(
+          'Favourite',
+          style: AppTextstyle.tsSemiboldSize18.copyWith(
+            color: AppColors.darkText,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(),
             Expanded(child: _buildFavouriteContent()),
             _buildAddToCartButton(),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppPadding.p20,
-        vertical: AppPadding.p20,
-      ),
-      child: AppText(
-        text: 'Favourite',
-        style: AppTextstyle.tsRegularSize16,
-        textAlign: TextAlign.center,
       ),
     );
   }
@@ -189,7 +183,7 @@ class _FavouriteView extends StatelessWidget {
             text:
                 'Add All To Cart (\$${cart.discountedTotal.toStringAsFixed(2)})',
             onPressed: () {
-              // TODO: Implement add all to cart functionality
+              // Handle add all to cart action
             },
           ),
         );

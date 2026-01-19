@@ -15,6 +15,7 @@ class FavouriteBloc extends Bloc<FavouriteEvent, FavouriteState> {
     on<OnRefreshFavouriteCartEvent>(_onRefreshFavouriteCart);
   }
 
+  /// Load favourite cart
   Future<void> _onLoadFavouriteCart(
     OnLoadFavouriteCartEvent event,
     Emitter<FavouriteState> emit,
@@ -42,6 +43,7 @@ class FavouriteBloc extends Bloc<FavouriteEvent, FavouriteState> {
     }
   }
 
+  /// Refresh favourite cart
   Future<void> _onRefreshFavouriteCart(
     OnRefreshFavouriteCartEvent event,
     Emitter<FavouriteState> emit,

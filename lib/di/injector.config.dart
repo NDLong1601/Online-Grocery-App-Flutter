@@ -28,8 +28,12 @@ import 'package:online_groceries_store_app/data/repositories/auth_repository_imp
     as _i810;
 import 'package:online_groceries_store_app/data/repositories/cart_repository_impl.dart'
     as _i506;
+import 'package:online_groceries_store_app/data/repositories/category_repository_impl.dart'
+    as _i119;
 import 'package:online_groceries_store_app/data/repositories/local_storage_impl.dart'
     as _i646;
+import 'package:online_groceries_store_app/data/repositories/product_repository_impl.dart'
+    as _i873;
 import 'package:online_groceries_store_app/di/domain_module.dart' as _i449;
 import 'package:online_groceries_store_app/di/env_module.dart' as _i528;
 import 'package:online_groceries_store_app/di/third_party_module.dart' as _i686;
@@ -39,14 +43,28 @@ import 'package:online_groceries_store_app/domain/repositories/auth_repository.d
     as _i564;
 import 'package:online_groceries_store_app/domain/repositories/cart_repository.dart'
     as _i140;
+import 'package:online_groceries_store_app/domain/repositories/category_repository.dart'
+    as _i714;
 import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart'
     as _i188;
+import 'package:online_groceries_store_app/domain/repositories/product_repository.dart'
+    as _i1002;
+import 'package:online_groceries_store_app/domain/usecase/add_to_cart_usecase.dart'
+    as _i194;
+import 'package:online_groceries_store_app/domain/usecase/create_cart_usecase.dart'
+    as _i249;
+import 'package:online_groceries_store_app/domain/usecase/get_categories_usecase.dart'
+    as _i203;
 import 'package:online_groceries_store_app/domain/usecase/get_my_cart_usecase.dart'
     as _i233;
+import 'package:online_groceries_store_app/domain/usecase/get_products_by_category_usecase.dart'
+    as _i925;
 import 'package:online_groceries_store_app/domain/usecase/get_single_cart_usecase.dart'
     as _i779;
 import 'package:online_groceries_store_app/domain/usecase/login_user_usecase.dart'
     as _i478;
+import 'package:online_groceries_store_app/domain/usecase/update_cart_usecase.dart'
+    as _i881;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 const String _dev = 'dev';
@@ -127,14 +145,35 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i564.IAuthRepository>(
       () => _i810.AuthRepositoryImpl(gh<_i960.ApiService>()),
     );
+    gh.lazySingleton<_i714.ICategoryRepository>(
+      () => _i119.CategoryRepositoryImpl(gh<_i960.ApiService>()),
+    );
+    gh.lazySingleton<_i1002.IProductRepository>(
+      () => _i873.ProductRepositoryImpl(gh<_i960.ApiService>()),
+    );
     gh.factory<_i233.GetMyCartUsecase>(
       () => domainModule.getMyCartUsecase(gh<_i140.ICartRepository>()),
     );
     gh.factory<_i779.GetSingleCartUsecase>(
       () => domainModule.getSingleCartUsecase(gh<_i140.ICartRepository>()),
     );
+    gh.factory<_i194.AddToCartUsecase>(
+      () => domainModule.addToCartUsecase(gh<_i140.ICartRepository>()),
+    );
+    gh.factory<_i249.CreateCartUsecase>(
+      () => domainModule.createCartUsecase(gh<_i140.ICartRepository>()),
+    );
+    gh.factory<_i925.GetProductsByCategoryUsecase>(
+      () => _i925.GetProductsByCategoryUsecase(gh<_i1002.IProductRepository>()),
+    );
     gh.factory<_i478.LoginUserUsecase>(
       () => domainModule.loginUserUsecase(gh<_i564.IAuthRepository>()),
+    );
+    gh.factory<_i203.GetCategoriesUsecase>(
+      () => _i203.GetCategoriesUsecase(gh<_i714.ICategoryRepository>()),
+    );
+    gh.lazySingleton<_i881.UpdateCartUsecase>(
+      () => _i881.UpdateCartUsecase(gh<_i140.ICartRepository>()),
     );
     return this;
   }

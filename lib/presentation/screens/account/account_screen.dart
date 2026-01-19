@@ -130,32 +130,31 @@ class AccountScreen extends StatelessWidget {
                     leading: Assets.icons.icAbout.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        context.appLocalizations!.changeLanguage,
-                        style: AppTextstyle.tsRegularSize16,
-                      ),
-                      const Spacer(),
-                      BlocBuilder<LocaleBloc, LocaleState>(
-                        builder: (context, state) {
-                          final bool isEnglish = state.languageCode == 'en'
-                              ? true
-                              : false;
-                          return Switch(
-                            value: isEnglish,
-                            onChanged: (value) {
-                              context.read<LocaleBloc>().add(
-                                OnChangeLocaleEvent(
-                                  state.languageCode == 'en' ? 'vi' : 'en',
-                                  state.countryCode == 'US' ? 'VN' : 'US',
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ],
+                  AppActionTile(
+                    leading: Icon(
+                      Icons.language,
+                      size: 20,
+                      color: AppColors.darkText,
+                    ),
+                    title: context.appLocalizations!.changeLanguage,
+                    titleStyle: AppTextstyle.tsSemiboldSize16,
+                    showDivider: true,
+                    trailing: BlocBuilder<LocaleBloc, LocaleState>(
+                      builder: (context, state) {
+                        final bool isEnglish = state.languageCode == 'en';
+                        return Switch(
+                          value: isEnglish,
+                          onChanged: (value) {
+                            context.read<LocaleBloc>().add(
+                              OnChangeLocaleEvent(
+                                state.languageCode == 'en' ? 'vi' : 'en',
+                                state.countryCode == 'US' ? 'VN' : 'US',
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
