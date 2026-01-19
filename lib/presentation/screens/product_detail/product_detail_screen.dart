@@ -10,6 +10,7 @@ import 'package:online_groceries_store_app/presentation/bloc/product_detail/prod
 import 'package:online_groceries_store_app/presentation/bloc/product_detail/product_detail_state.dart';
 import 'package:online_groceries_store_app/presentation/error/failure_mapper.dart';
 import 'package:online_groceries_store_app/presentation/screens/product_detail/widget/expandable_header.dart';
+import 'package:online_groceries_store_app/presentation/screens/product_detail/widget/image_indicator.dart';
 import 'package:online_groceries_store_app/presentation/screens/product_detail/widget/start_rating.dart';
 import 'package:online_groceries_store_app/presentation/shared/app_button.dart';
 import 'package:online_groceries_store_app/presentation/shared/app_text.dart';
@@ -152,7 +153,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                 },
               ),
             ),
-            if (images.length > 1) _buildImageIndicator(images.length),
+            if (images.length > 1) ImageIndicator(length: images.length, currentImageIndex: _currentImageIndex),
             SizedBox(height: AppPadding.p16),
           ],
         ),
@@ -180,26 +181,6 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
             icon: const Icon(Icons.ios_share, color: AppColors.darkText),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildImageIndicator(int length) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        length,
-        (index) => Container(
-          width: index == _currentImageIndex ? 16 : 8,
-          height: 8,
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          decoration: BoxDecoration(
-            color: index == _currentImageIndex
-                ? AppColors.greenAccent
-                : AppColors.grayText.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(4),
-          ),
-        ),
       ),
     );
   }
