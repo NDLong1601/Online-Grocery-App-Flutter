@@ -1,11 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:online_groceries_store_app/domain/usecase/add_to_cart_usecase.dart';
 import 'package:online_groceries_store_app/domain/usecase/create_cart_usecase.dart';
-import 'package:online_groceries_store_app/domain/usecase/get_my_cart_usecase.dart';
 import 'package:online_groceries_store_app/domain/usecase/get_products_by_category_usecase.dart';
-import 'package:online_groceries_store_app/domain/value_object/add_to_cart_params.dart';
 import 'package:online_groceries_store_app/domain/value_object/create_cart_params.dart';
-import 'package:online_groceries_store_app/domain/value_object/get_my_cart_params.dart';
 import 'package:online_groceries_store_app/presentation/bloc/category_detail/category_detail_event.dart';
 import 'package:online_groceries_store_app/presentation/bloc/category_detail/category_detail_state.dart';
 import 'package:online_groceries_store_app/presentation/error/failure_mapper.dart';
@@ -20,9 +16,7 @@ import 'package:online_groceries_store_app/presentation/error/failure_mapper.dar
 class CategoryDetailBloc
     extends Bloc<CategoryDetailEvent, CategoryDetailState> {
   final GetProductsByCategoryUsecase _getProductsByCategoryUsecase;
-  final AddToCartUsecase _addToCartUsecase;
   final CreateCartUsecase _createCartUsecase;
-  final GetMyCartUsecase _getMyCartUsecase;
   final FailureMapper _failureMapper;
 
   /// Current user ID - in real app, this should come from auth state
@@ -31,9 +25,7 @@ class CategoryDetailBloc
 
   CategoryDetailBloc(
     this._getProductsByCategoryUsecase,
-    this._addToCartUsecase,
     this._createCartUsecase,
-    this._getMyCartUsecase,
     this._failureMapper,
   ) : super(const CategoryDetailState()) {
     on<OnLoadProductsByCategoryEvent>(_onLoadProducts);
@@ -99,11 +91,8 @@ class CategoryDetailBloc
 
   /// Handles adding product to cart
   ///
-  /// Flow:
-  /// 1. Get user's current cart to obtain cartId
-  /// 2. If user has cart → Update cart with new product (PUT)
-  /// 3. If user has no cart → Create new cart with product (POST)
-  /// 4. Show success message or error
+  /// Uses POST /carts/add to add product to cart
+  /// DummyJSON API simulates the request and returns a new cart with new ID
   Future<void> _onAddProductToCart(
     OnAddProductToCartEvent event,
     Emitter<CategoryDetailState> emit,
@@ -119,13 +108,17 @@ class CategoryDetailBloc
         ),
       );
 
-      // Step 1: Get user's cart to check if cart exists
-      final cartResult = await _getMyCartUsecase.call(
-        const GetMyCartParams(userId: _defaultUserId),
+      // Use POST /carts/add to add product to cart
+      final result = await _createCartUsecase.call(
+        CreateCartParams(
+          userId: _defaultUserId,
+          productId: event.productId,
+          quantity: event.quantity,
+        ),
       );
 
-      await cartResult.fold(
-        (failure) async {
+      result.fold(
+        (failure) {
           emit(
             state.copyWith(
               isAddingToCart: false,
@@ -136,16 +129,14 @@ class CategoryDetailBloc
             ),
           );
         },
-        (cartsByUser) async {
-          final currentCart = cartsByUser.currentCart;
-
-          if (currentCart == null) {
-            // User has no cart → Create new cart with this product
-            await _createNewCart(event, emit);
-          } else {
-            // User has cart → Update existing cart
-            await _updateExistingCart(currentCart.id, event, emit);
-          }
+        (cart) {
+          emit(
+            state.copyWith(
+              isAddingToCart: false,
+              addingProductId: null,
+              addToCartSuccessMessage: 'Product added to cart successfully!',
+            ),
+          );
         },
       );
     } catch (e) {
@@ -157,76 +148,5 @@ class CategoryDetailBloc
         ),
       );
     }
-  }
-
-  /// Creates a new cart with the product when user has no existing cart
-  Future<void> _createNewCart(
-    OnAddProductToCartEvent event,
-    Emitter<CategoryDetailState> emit,
-  ) async {
-    final createResult = await _createCartUsecase.call(
-      CreateCartParams(
-        userId: _defaultUserId,
-        productId: event.productId,
-        quantity: event.quantity,
-      ),
-    );
-
-    createResult.fold(
-      (failure) {
-        emit(
-          state.copyWith(
-            isAddingToCart: false,
-            addingProductId: null,
-            addToCartErrorMessage: _failureMapper.mapFailureToMessage(failure),
-          ),
-        );
-      },
-      (newCart) {
-        emit(
-          state.copyWith(
-            isAddingToCart: false,
-            addingProductId: null,
-            addToCartSuccessMessage: 'Product added to cart successfully!',
-          ),
-        );
-      },
-    );
-  }
-
-  /// Updates existing cart with the product
-  Future<void> _updateExistingCart(
-    int cartId,
-    OnAddProductToCartEvent event,
-    Emitter<CategoryDetailState> emit,
-  ) async {
-    final addResult = await _addToCartUsecase.call(
-      AddToCartParams(
-        cartId: cartId,
-        productId: event.productId,
-        quantity: event.quantity,
-      ),
-    );
-
-    addResult.fold(
-      (failure) {
-        emit(
-          state.copyWith(
-            isAddingToCart: false,
-            addingProductId: null,
-            addToCartErrorMessage: _failureMapper.mapFailureToMessage(failure),
-          ),
-        );
-      },
-      (updatedCart) {
-        emit(
-          state.copyWith(
-            isAddingToCart: false,
-            addingProductId: null,
-            addToCartSuccessMessage: 'Product added to cart successfully!',
-          ),
-        );
-      },
-    );
   }
 }

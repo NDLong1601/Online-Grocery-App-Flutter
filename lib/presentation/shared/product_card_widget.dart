@@ -7,40 +7,54 @@ import 'package:online_groceries_store_app/presentation/theme/app_colors.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_padding.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_textstyle.dart';
 
-/// Product card widget for displaying product in grid
-class ProductCard extends StatelessWidget {
+/// Reusable Product card widget that can be used in grid or horizontal list
+class ProductCardWidget extends StatelessWidget {
   final ProductEntity product;
-  final VoidCallback onAddToCart;
+  final VoidCallback? onTap;
+  final VoidCallback? onAddToCart;
   final bool isAddingToCart;
+  final double? width;
+  final double? height;
 
-  const ProductCard({
+  const ProductCardWidget({
     super.key,
     required this.product,
-    required this.onAddToCart,
+    this.onTap,
+    this.onAddToCart,
     this.isAddingToCart = false,
+    this.width,
+    this.height,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.2), width: 1),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildProductImage(),
-            SizedBox(height: AppPadding.p8),
-            _buildProductTitle(),
-            SizedBox(height: AppPadding.p4),
-            _buildProductSubtitle(),
-            SizedBox(height: AppPadding.p12),
-            _buildPriceAndAddButton(),
-          ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: Colors.grey.withValues(alpha: 0.2),
+            width: 1,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildProductImage(),
+              SizedBox(height: AppPadding.p8),
+              _buildProductTitle(),
+              SizedBox(height: AppPadding.p4),
+              _buildProductSubtitle(),
+              const Spacer(),
+              _buildPriceAndAddButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -78,7 +92,7 @@ class ProductCard extends StatelessWidget {
   Widget _buildProductTitle() {
     return AppText(
       text: product.title,
-      style: AppTextstyle.tsRegularSize16.copyWith(color: AppColors.darkText),
+      style: AppTextstyle.tsSemiboldSize16.copyWith(color: AppColors.darkText),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
@@ -103,36 +117,42 @@ class ProductCard extends StatelessWidget {
             ),
           ),
         ),
-        isAddingToCart
-            ? Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  color: AppColors.greenAccent,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Center(
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              )
-            : AppSquareIconButton(
-                icon: Icons.add,
-                onPressed: onAddToCart,
-                size: 42,
-                borderRadius: 16,
-                backgroundColor: AppColors.greenAccent,
-                borderColor: AppColors.grayText.withValues(alpha: 0.20),
-                iconColor: Colors.white,
-                iconSize: 22,
-              ),
+        _buildAddButton(),
       ],
+    );
+  }
+
+  Widget _buildAddButton() {
+    if (isAddingToCart) {
+      return Container(
+        width: 42,
+        height: 42,
+        decoration: BoxDecoration(
+          color: AppColors.greenAccent,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: const Center(
+          child: SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return AppSquareIconButton(
+      icon: Icons.add,
+      onPressed: onAddToCart,
+      size: 42,
+      borderRadius: 16,
+      backgroundColor: AppColors.greenAccent,
+      borderColor: AppColors.grayText.withValues(alpha: 0.20),
+      iconColor: Colors.white,
+      iconSize: 22,
     );
   }
 }

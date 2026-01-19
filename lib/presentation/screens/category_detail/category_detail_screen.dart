@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:online_groceries_store_app/di/injector.dart';
-import 'package:online_groceries_store_app/domain/usecase/add_to_cart_usecase.dart';
 import 'package:online_groceries_store_app/domain/usecase/create_cart_usecase.dart';
-import 'package:online_groceries_store_app/domain/usecase/get_my_cart_usecase.dart';
 import 'package:online_groceries_store_app/domain/usecase/get_products_by_category_usecase.dart';
 import 'package:online_groceries_store_app/presentation/bloc/category_detail/category_detail_bloc.dart';
 import 'package:online_groceries_store_app/presentation/bloc/category_detail/category_detail_event.dart';
 import 'package:online_groceries_store_app/presentation/bloc/category_detail/category_detail_state.dart';
 import 'package:online_groceries_store_app/presentation/error/failure_mapper.dart';
-import 'package:online_groceries_store_app/presentation/screens/category_detail/widget/product_card.dart';
+import 'package:online_groceries_store_app/presentation/screens/product_detail/product_detail_screen.dart';
+import 'package:online_groceries_store_app/presentation/shared/product_card_widget.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_colors.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_padding.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_textstyle.dart';
@@ -29,9 +28,7 @@ class CategoryDetailScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => CategoryDetailBloc(
         getIt<GetProductsByCategoryUsecase>(),
-        getIt<AddToCartUsecase>(),
         getIt<CreateCartUsecase>(),
-        getIt<GetMyCartUsecase>(),
         FailureMapper(context),
       )..add(OnLoadProductsByCategoryEvent(categorySlug: categorySlug)),
       child: _CategoryDetailView(
@@ -196,9 +193,16 @@ class _CategoryDetailView extends StatelessWidget {
           final product = state.products[index];
           final isAddingThisProduct =
               state.isAddingToCart && state.addingProductId == product.id;
-          return ProductCard(
+          return ProductCardWidget(
             product: product,
             isAddingToCart: isAddingThisProduct,
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProductDetailScreen(product: product),
+                ),
+              );
+            },
             onAddToCart: () {
               // Prevent multiple clicks while adding
               if (!state.isAddingToCart) {
