@@ -6,6 +6,7 @@ import 'package:online_groceries_store_app/data/models/request/login_request.dar
 import 'package:online_groceries_store_app/data/models/response/carts_by_user_response_dto.dart';
 import 'package:online_groceries_store_app/data/models/response/category_dto.dart';
 import 'package:online_groceries_store_app/data/models/response/login_dto.dart';
+import 'package:online_groceries_store_app/data/models/response/product_dto.dart';
 import 'package:online_groceries_store_app/data/models/response/products_by_category_response_dto.dart';
 import 'package:online_groceries_store_app/data/models/response/single_cart_response_dto.dart';
 import 'package:retrofit/retrofit.dart';
@@ -41,6 +42,9 @@ abstract class ApiService {
   Future<ProductsByCategoryResponseDto> getProductsByCategory(
     @Path('categorySlug') String categorySlug,
   );
+
+  @GET('/products/{id}')
+  Future<ProductDto> getProductById(@Path('id') int id);
 
   @PUT('/carts/{cartId}')
   Future<SingleCartResponseDto> updateCart(

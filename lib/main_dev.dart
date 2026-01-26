@@ -19,7 +19,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies(env: dev.name);
 
-  await ChottuLink.init(apiKey: "c_app_HVA1aQuhwhsY58hbCohVk8JMToIbC6V1");
+  try {
+    await ChottuLink.init(apiKey: "c_app_HVA1aQuhwhsY58hbCohVk8JMToIbC6V1");
+    debugPrint("✅ ChottuLink initialized successfully.");
+  } catch (e) {
+    debugPrint("❌ ChottuLink initialization error: $e");
+  }
 
   runApp(const MyApp());
 }

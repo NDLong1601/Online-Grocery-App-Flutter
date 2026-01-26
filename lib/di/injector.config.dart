@@ -57,6 +57,8 @@ import 'package:online_groceries_store_app/domain/usecase/get_categories_usecase
     as _i203;
 import 'package:online_groceries_store_app/domain/usecase/get_my_cart_usecase.dart'
     as _i233;
+import 'package:online_groceries_store_app/domain/usecase/get_product_by_id_usecase.dart'
+    as _i622;
 import 'package:online_groceries_store_app/domain/usecase/get_products_by_category_usecase.dart'
     as _i925;
 import 'package:online_groceries_store_app/domain/usecase/get_single_cart_usecase.dart'
@@ -163,17 +165,22 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i249.CreateCartUsecase>(
       () => domainModule.createCartUsecase(gh<_i140.ICartRepository>()),
     );
+    gh.factory<_i881.UpdateCartUsecase>(
+      () => domainModule.updateCartUsecase(gh<_i140.ICartRepository>()),
+    );
+    gh.factory<_i203.GetCategoriesUsecase>(
+      () => domainModule.getCategoriesUsecase(gh<_i714.ICategoryRepository>()),
+    );
     gh.factory<_i925.GetProductsByCategoryUsecase>(
-      () => _i925.GetProductsByCategoryUsecase(gh<_i1002.IProductRepository>()),
+      () => domainModule.getProductsByCategoryUsecase(
+        gh<_i1002.IProductRepository>(),
+      ),
+    );
+    gh.factory<_i622.GetProductByIdUsecase>(
+      () => domainModule.getProductByIdUsecase(gh<_i1002.IProductRepository>()),
     );
     gh.factory<_i478.LoginUserUsecase>(
       () => domainModule.loginUserUsecase(gh<_i564.IAuthRepository>()),
-    );
-    gh.factory<_i203.GetCategoriesUsecase>(
-      () => _i203.GetCategoriesUsecase(gh<_i714.ICategoryRepository>()),
-    );
-    gh.lazySingleton<_i881.UpdateCartUsecase>(
-      () => _i881.UpdateCartUsecase(gh<_i140.ICartRepository>()),
     );
     return this;
   }

@@ -8,6 +8,16 @@ abstract class ProductDetailEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// Event to load product detail by ID
+class OnLoadProductDetailEvent extends ProductDetailEvent {
+  final int productId;
+
+  const OnLoadProductDetailEvent({required this.productId});
+
+  @override
+  List<Object?> get props => [productId];
+}
+
 /// Event to increment quantity
 class OnIncrementQuantityEvent extends ProductDetailEvent {
   const OnIncrementQuantityEvent();

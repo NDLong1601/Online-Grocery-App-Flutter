@@ -457,7 +457,8 @@ class _ShopViewState extends State<_ShopView> {
   void _onProductTap(ProductEntity product) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => ProductDetailScreen(product: product),
+        builder: (context) =>
+            ProductDetailScreen(productId: product.id, isFromDeepLink: false),
       ),
     );
   }

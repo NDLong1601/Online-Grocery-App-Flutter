@@ -4,14 +4,19 @@ import 'package:chottu_link/dynamic_link/cl_dynamic_link_behaviour.dart';
 import 'package:chottu_link/dynamic_link/cl_dynamic_link_parameters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:online_groceries_store_app/core/enums/button_style.dart';
 import 'package:online_groceries_store_app/di/injector.dart';
-import 'package:online_groceries_store_app/domain/entities/product_entity.dart';
+import 'package:online_groceries_store_app/domain/core/app_logger.dart';
+import 'package:online_groceries_store_app/domain/entities/login_entity.dart';
+import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart';
 import 'package:online_groceries_store_app/domain/usecase/create_cart_usecase.dart';
+import 'package:online_groceries_store_app/domain/usecase/get_product_by_id_usecase.dart';
 import 'package:online_groceries_store_app/presentation/bloc/product_detail/product_detail_bloc.dart';
 import 'package:online_groceries_store_app/presentation/bloc/product_detail/product_detail_event.dart';
 import 'package:online_groceries_store_app/presentation/bloc/product_detail/product_detail_state.dart';
 import 'package:online_groceries_store_app/presentation/error/failure_mapper.dart';
+import 'package:online_groceries_store_app/presentation/routes/route_name.dart';
 import 'package:online_groceries_store_app/presentation/screens/product_detail/widget/expandable_header.dart';
 import 'package:online_groceries_store_app/presentation/screens/product_detail/widget/image_indicator.dart';
 import 'package:online_groceries_store_app/presentation/screens/product_detail/widget/start_rating.dart';
@@ -23,24 +28,39 @@ import 'package:online_groceries_store_app/presentation/theme/app_textstyle.dart
 import 'package:share_plus/share_plus.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  final ProductEntity product;
+  final int productId;
+  final bool isFromDeepLink;
 
-  const ProductDetailScreen({super.key, required this.product});
+  const ProductDetailScreen({
+    super.key,
+    required this.productId,
+    required this.isFromDeepLink,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          ProductDetailBloc(getIt<CreateCartUsecase>(), FailureMapper(context)),
-      child: _ProductDetailView(product: product),
+      create: (context) => ProductDetailBloc(
+        getIt<GetProductByIdUsecase>(),
+        getIt<CreateCartUsecase>(),
+        FailureMapper(context),
+      )..add(OnLoadProductDetailEvent(productId: productId)),
+      child: _ProductDetailView(
+        productId: productId,
+        isFromDeepLink: isFromDeepLink,
+      ),
     );
   }
 }
 
 class _ProductDetailView extends StatefulWidget {
-  final ProductEntity product;
+  final int productId;
+  final bool isFromDeepLink;
 
-  const _ProductDetailView({required this.product});
+  const _ProductDetailView({
+    required this.productId,
+    required this.isFromDeepLink,
+  });
 
   @override
   State<_ProductDetailView> createState() => _ProductDetailViewState();
@@ -63,6 +83,24 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
       body: BlocConsumer<ProductDetailBloc, ProductDetailState>(
         listener: _blocListener,
         builder: (context, state) {
+          // Loading state
+          if (state.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.greenAccent),
+            );
+          }
+
+          // Error state
+          if (state.errorMessage.isNotEmpty) {
+            return _buildErrorWidget(state.errorMessage);
+          }
+
+          // Product not loaded yet
+          if (state.product == null) {
+            return const Center(child: Text('Product not found'));
+          }
+
+          // Success state - show product details
           return Column(
             children: [
               Expanded(
@@ -70,15 +108,18 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildImageSection(),
+                      _buildImageSection(
+                        state.product!,
+                        isFromDeepLink: widget.isFromDeepLink,
+                      ),
                       _buildProductInfo(state),
                       _buildQuantityAndPrice(state),
                       SizedBox(height: AppPadding.p8),
                       _buildProductDetailSection(state),
                       SizedBox(height: AppPadding.p8),
-                      _buildNutritionsSection(),
+                      _buildNutritionsSection(state.product!),
                       SizedBox(height: AppPadding.p8),
-                      _buildReviewSection(),
+                      _buildReviewSection(state.product!),
                       SizedBox(height: AppPadding.p24),
                     ],
                   ),
@@ -88,6 +129,38 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildErrorWidget(String errorMessage) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(AppPadding.p16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, size: 64, color: Colors.red[300]),
+            SizedBox(height: AppPadding.p16),
+            Text(
+              errorMessage,
+              style: AppTextstyle.tsRegularSize14.copyWith(color: Colors.red),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: AppPadding.p16),
+            ElevatedButton(
+              onPressed: () {
+                context.read<ProductDetailBloc>().add(
+                  OnLoadProductDetailEvent(productId: widget.productId),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.greenAccent,
+              ),
+              child: const Text('Retry', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -113,10 +186,10 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
     }
   }
 
-  Widget _buildImageSection() {
-    final images = widget.product.images.isNotEmpty
-        ? widget.product.images
-        : [widget.product.thumbnail];
+  Widget _buildImageSection(product, {required bool isFromDeepLink}) {
+    final images = product.images.isNotEmpty
+        ? product.images
+        : [product.thumbnail];
 
     return Container(
       color: const Color(0xFFF2F3F2),
@@ -124,7 +197,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
         bottom: false,
         child: Column(
           children: [
-            _buildAppBar(),
+            _buildAppBar(product, isFromDeepLink: isFromDeepLink),
             SizedBox(
               height: 250,
               child: PageView.builder(
@@ -169,7 +242,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
     );
   }
 
-  Widget _buildAppBar() {
+  Widget _buildAppBar(product, {required bool isFromDeepLink}) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: AppPadding.p16,
@@ -179,36 +252,54 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () async {
+              if (isFromDeepLink) {
+                /// mock user entity -> testing only
+                final accessToken = await getIt<ILocalStorage>()
+                    .getAccessToken();
+                accessToken.fold(
+                  (failure) {
+                    getIt<AppLogger>().e(
+                      "Error getting access token",
+                      metadata: {'cause': failure.cause?.toString()},
+                    );
+                    return '';
+                  },
+                  (accessToken) {
+                    if (accessToken != null && accessToken.isNotEmpty) {
+                      final LoginEntity user = LoginEntity(
+                        id: 6,
+                        username: 'username',
+                        email: "email@gmail.com",
+                        fullName: 'fullName',
+                        gender: 'gender',
+                        image:
+                            'https://cdn.dummyjson.com/products/images/smartphones/Vivo%20S1/thumbnail.png',
+                        accessToken: accessToken,
+                        refreshToken: 'refreshToken',
+                      );
+                      context.goNamed(RouteName.bottomTabName, extra: user);
+                    }
+                  },
+                );
+              } else {
+                context.pop();
+              }
+            },
             icon: const Icon(Icons.arrow_back_ios, color: AppColors.darkText),
           ),
           IconButton(
             onPressed: () {
-              // Share product by chottu link
               /// Create dynamic link parameters
+              debugPrint("product id: ${product.id}");
               final parameters = CLDynamicLinkParameters(
                 link: Uri.parse(
-                  "https://finn1601.chottu.link/product/${widget.product.id}",
+                  "https://finn1601.chottu.link/product/${product.id}",
                 ), // Target deep link
-                domain: "finn1601.chottu.link", // Your ChottuLink domain
+                domain: "finn1601.chottu.link",
                 // Set behavior for Android & iOS
                 androidBehaviour: CLDynamicLinkBehaviour.app,
                 iosBehaviour: CLDynamicLinkBehaviour.app,
-
-                // // UTM Tracking (for analytics)
-                // utmCampaign: "exampleCampaign",
-                // utmMedium: "exampleMedium",
-                // utmSource: "exampleSource",
-                // utmContent: "exampleContent",
-                // utmTerm: "exampleTerm",
-
-                // Optional metadata
-                linkName: "linkname",
-                selectedPath: "customPath",
-                socialTitle: "Social Title",
-                socialDescription: "Description to show when shared",
-                socialImageUrl:
-                    "https://dummyjson.com/products/category/home-decoration", // Must be a valid image URL
               );
 
               ChottuLink.createDynamicLink(
@@ -221,10 +312,13 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                 },
                 onError: (error) {
                   debugPrint("❌ Error creating link: ${error.description}");
+                  debugPrint(
+                    "❌ Shared Link Error: https://finn1601.chottu.link/product/${product.id}",
+                  );
                   SharePlus.instance.share(
                     ShareParams(
                       uri: Uri.parse(
-                        "https://finn1601.chottu.link/product/${widget.product.id}",
+                        "https://finn1601.chottu.link/product/${product.id}",
                       ),
                     ),
                   );
@@ -239,6 +333,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
   }
 
   Widget _buildProductInfo(ProductDetailState state) {
+    final product = state.product!;
     return Padding(
       padding: EdgeInsets.all(AppPadding.p16),
       child: Column(
@@ -249,7 +344,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
             children: [
               Expanded(
                 child: Text(
-                  widget.product.title,
+                  product.title,
                   style: AppTextstyle.tsSemiboldSize24.copyWith(
                     color: AppColors.darkText,
                   ),
@@ -271,7 +366,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
           ),
           SizedBox(height: AppPadding.p4),
           Text(
-            '${widget.product.stock} pcs, Price',
+            '${product.stock} pcs, Price',
             style: AppTextstyle.tsRegularSize16.copyWith(
               color: AppColors.grayText,
             ),
@@ -282,6 +377,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
   }
 
   Widget _buildQuantityAndPrice(ProductDetailState state) {
+    final product = state.product!;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: AppPadding.p16),
       child: Row(
@@ -289,7 +385,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
         children: [
           _buildQuantitySelector(state),
           Text(
-            '\$${widget.product.price.toStringAsFixed(2)}',
+            '\$${product.price.toStringAsFixed(2)}',
             style: AppTextstyle.tsSemiboldSize24.copyWith(
               color: AppColors.darkText,
             ),
@@ -359,6 +455,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
   }
 
   Widget _buildProductDetailSection(ProductDetailState state) {
+    final product = state.product!;
     return Column(
       children: [
         ExpandableHeader(
@@ -376,7 +473,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
             child: Padding(
               padding: EdgeInsets.only(bottom: AppPadding.p16),
               child: Text(
-                widget.product.description,
+                product.description,
                 style: AppTextstyle.tsRegularSize14.copyWith(
                   color: AppColors.grayText,
                   height: 1.5,
@@ -388,7 +485,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
     );
   }
 
-  Widget _buildNutritionsSection() {
+  Widget _buildNutritionsSection(product) {
     return InkWell(
       onTap: () {
         // Navigate to nutritions detail
@@ -416,7 +513,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    '${widget.product.weight}gr',
+                    '${product.weight}gr',
                     style: AppTextstyle.tsRegularSize14.copyWith(
                       color: AppColors.grayText,
                     ),
@@ -435,7 +532,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
     );
   }
 
-  Widget _buildReviewSection() {
+  Widget _buildReviewSection(product) {
     return InkWell(
       onTap: () {
         // Navigate to reviews
@@ -453,7 +550,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
             ),
             Row(
               children: [
-                StartRating(rating: widget.product.rating),
+                StartRating(rating: product.rating),
                 SizedBox(width: AppPadding.p8),
                 const Icon(
                   Icons.keyboard_arrow_right,
@@ -468,6 +565,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
   }
 
   Widget _buildAddToBasketButton(ProductDetailState state) {
+    final product = state.product!;
     return Container(
       padding: EdgeInsets.all(AppPadding.p16),
       decoration: const BoxDecoration(
@@ -489,10 +587,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
           isLoading: state.isAddingToCart,
           onPressed: () {
             context.read<ProductDetailBloc>().add(
-              OnAddToCartEvent(
-                productId: widget.product.id,
-                quantity: state.quantity,
-              ),
+              OnAddToCartEvent(productId: product.id, quantity: state.quantity),
             );
           },
         ),

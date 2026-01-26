@@ -1,6 +1,7 @@
 import 'package:chottu_link/chottu_link.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:online_groceries_store_app/core/utils/deep_link_manager.dart';
 import 'package:online_groceries_store_app/di/injector.dart';
 import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart';
 import 'package:online_groceries_store_app/l10n/app_localizations.dart';
@@ -8,6 +9,7 @@ import 'package:online_groceries_store_app/presentation/bloc/locale/locale_bloc.
 import 'package:online_groceries_store_app/presentation/bloc/locale/locale_event.dart';
 import 'package:online_groceries_store_app/presentation/bloc/locale/locale_state.dart';
 import 'package:online_groceries_store_app/presentation/routes/app_router.dart';
+import 'package:online_groceries_store_app/presentation/routes/deep_link_helper.dart';
 
 ////
 /// Khả năng / trình độ của bản thân = AI Power * Your Knowledge * Prompting Skill
@@ -40,11 +42,52 @@ class _AppEntryWidgetState extends State<AppEntryWidget> {
 
   void _listenToDeepLinks() {
     /// 🔗 Listen for incoming dynamic links
-    ChottuLink.onLinkReceived.listen((String link) {
-      debugPrint(" ✅ Link Received: $link");
+    /// This handles both:
+    /// 1. Cold start: App killed → click link → opens app
+    /// 2. Warm start: App running → click link
+    ChottuLink.onLinkReceived.listen(
+      (String link) {
+        try {
+          debugPrint("✅ ========================================");
+          debugPrint("✅ Link Received: $link");
+          debugPrint("✅ Widget mounted: $mounted");
+          debugPrint("✅ ========================================");
 
-      /// Tip: ➡️ Navigate to a specific page or take action based on the link
-    });
+          if (!mounted) {
+            debugPrint("⚠️ Widget not mounted, cannot navigate.");
+            return;
+          }
+
+          debugPrint("🔄 Step 1: Storing link in manager...");
+
+          /// Store the link in DeepLinkManager
+          /// It will be processed after OnboardingScreen completes its navigation
+          DeepLinkManager.instance.setPendingDeepLink(link);
+          debugPrint("📦 Step 2: Deep link stored in manager");
+
+          debugPrint("🔄 Step 3: Calling _handleDeepLink...");
+          _handleDeepLink(link);
+          debugPrint("✅ Step 4: _handleDeepLink completed");
+        } catch (e, stackTrace) {
+          debugPrint("❌ Exception in _listenToDeepLinks: $e");
+          debugPrint("❌ StackTrace: $stackTrace");
+        }
+      },
+      onError: (error) {
+        debugPrint("❌ Error receiving link: $error");
+      },
+    );
+  }
+
+  void _handleDeepLink(String link) {
+    try {
+      debugPrint("🚀 Inside _handleDeepLink, calling DeepLinkHelper...");
+      DeepLinkHelper.handleDeepLink(link);
+      debugPrint("✅ DeepLinkHelper.handleDeepLink completed");
+    } catch (e, stackTrace) {
+      debugPrint("❌ Exception in _handleDeepLink: $e");
+      debugPrint("❌ StackTrace: $stackTrace");
+    }
   }
 
   @override

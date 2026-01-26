@@ -5,6 +5,7 @@ import 'package:online_groceries_store_app/presentation/screens/bottom_tab/botto
 import 'package:online_groceries_store_app/presentation/screens/login/login_screen.dart';
 import 'package:online_groceries_store_app/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:online_groceries_store_app/presentation/screens/order%20accepted/order_accepted_screen.dart';
+import 'package:online_groceries_store_app/presentation/screens/product_detail/product_detail_screen.dart';
 import 'package:online_groceries_store_app/presentation/screens/signup/signup_screen.dart';
 import 'package:online_groceries_store_app/presentation/screens/splash/splash_screen.dart';
 
@@ -61,6 +62,31 @@ class AppRouter {
         builder: (context, state) {
           final user = state.extra as LoginEntity;
           return BottomTab(user: user);
+        },
+      ),
+      GoRoute(
+        path: RouteName.productDetailPath,
+        name: RouteName.productDetailName,
+        builder: (context, state) {
+          final extra = state.extra;
+
+          /// Handle both int (from normal navigation) and Map (from deep link)
+          int productId;
+          bool isFromDeepLink = false;
+
+          if (extra is int) {
+            productId = extra;
+          } else if (extra is Map<String, dynamic>) {
+            productId = extra["productId"] as int? ?? 0;
+            isFromDeepLink = extra["isFromDeepLink"] as bool? ?? false;
+          } else {
+            productId = 0;
+          }
+
+          return ProductDetailScreen(
+            productId: productId,
+            isFromDeepLink: isFromDeepLink,
+          );
         },
       ),
     ],

@@ -11,4 +11,11 @@ abstract class IProductRepository {
   ResultFuture<List<ProductEntity>> getProductsByCategory({
     required String categorySlug,
   });
+
+  /// Get product detail by ID
+  ///
+  /// [productId] - The product ID to fetch details
+  ///
+  /// Returns product detail information
+  ResultFuture<ProductEntity> getProductById({required int productId});
 }

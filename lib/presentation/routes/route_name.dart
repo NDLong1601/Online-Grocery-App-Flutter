@@ -25,7 +25,8 @@ class RouteName {
   static const String bottomTabPath = '/bottom-tab';
   static const String onboardingPath = '/onboarding';
   static const String signUpPath = '/sign-up';
-static const String orderAcceptedPath = '/order-accepted';
+  static const String orderAcceptedPath = '/order-accepted';
+  static const String productDetailPath = '/product-detail';
   /// Define route name
   static const String splashName = 'splash';
   static const String loginName = 'login';
@@ -38,4 +39,5 @@ static const String orderAcceptedPath = '/order-accepted';
   static const String onboardingName = 'onboarding';
   static const String signUpName = 'sign-up';
   static const String orderAcceptedName = 'order-accepted';
+  static const String productDetailName = 'product-detail';
 }

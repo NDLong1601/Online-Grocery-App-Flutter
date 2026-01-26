@@ -7,6 +7,7 @@ import 'package:online_groceries_store_app/domain/usecase/add_to_cart_usecase.da
 import 'package:online_groceries_store_app/domain/usecase/create_cart_usecase.dart';
 import 'package:online_groceries_store_app/domain/usecase/get_categories_usecase.dart';
 import 'package:online_groceries_store_app/domain/usecase/get_my_cart_usecase.dart';
+import 'package:online_groceries_store_app/domain/usecase/get_product_by_id_usecase.dart';
 import 'package:online_groceries_store_app/domain/usecase/get_products_by_category_usecase.dart';
 import 'package:online_groceries_store_app/domain/usecase/get_single_cart_usecase.dart';
 import 'package:online_groceries_store_app/domain/usecase/login_user_usecase.dart';
@@ -69,5 +70,10 @@ abstract class DomainModule {
     IProductRepository repo,
   ) {
     return GetProductsByCategoryUsecase(repo);
+  }
+
+  @Injectable()
+  GetProductByIdUsecase getProductByIdUsecase(IProductRepository repo) {
+    return GetProductByIdUsecase(repo);
   }
 }

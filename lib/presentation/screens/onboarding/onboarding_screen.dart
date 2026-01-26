@@ -2,10 +2,12 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:online_groceries_store_app/core/assets_gen/assets.gen.dart';
 import 'package:online_groceries_store_app/core/extensions/context_extension.dart';
+import 'package:online_groceries_store_app/core/utils/deep_link_manager.dart';
 import 'package:online_groceries_store_app/di/injector.dart';
 import 'package:online_groceries_store_app/domain/core/app_logger.dart';
 import 'package:online_groceries_store_app/domain/entities/login_entity.dart';
 import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart';
+import 'package:online_groceries_store_app/presentation/routes/deep_link_helper.dart';
 import 'package:online_groceries_store_app/presentation/routes/route_name.dart';
 import 'package:online_groceries_store_app/presentation/shared/app_background.dart';
 import 'package:online_groceries_store_app/presentation/shared/app_button.dart';
@@ -26,7 +28,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _logger.i("🔍 OnboardingScreen: Checking for access token...");
+
+      /// Check if there's a pending deep link
+      final hasPendingLink = DeepLinkManager.instance.hasPendingDeepLink();
+      _logger.i("🔍 Has pending deep link: $hasPendingLink");
+
       final accessToken = await _localStorage.getAccessToken();
       accessToken.fold(
         (failure) {
@@ -38,6 +47,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         },
         (accessToken) {
           if (accessToken != null && accessToken.isNotEmpty) {
+            _logger.i("✅ Access token found, navigating to BottomTab");
+
             final LoginEntity user = LoginEntity(
               id: 6,
               username: 'username',
@@ -49,12 +60,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               accessToken: accessToken,
               refreshToken: 'refreshToken',
             );
+
             context.goNamed(RouteName.bottomTabName, extra: user);
+
+            /// Check for pending deep link after navigation completes
+            Future.delayed(const Duration(milliseconds: 800), () {
+              final pendingDeepLink = DeepLinkManager.instance
+                  .consumePendingDeepLink();
+              if (pendingDeepLink != null) {
+                _logger.i("🚀 Processing pending deep link: $pendingDeepLink");
+                DeepLinkHelper.handleDeepLink(pendingDeepLink);
+              } else {
+                _logger.i("ℹ️ No pending deep link to process");
+              }
+            });
+          } else {
+            _logger.i("ℹ️ No access token, staying on onboarding");
           }
         },
       );
     });
-    super.initState();
   }
 
   @override
