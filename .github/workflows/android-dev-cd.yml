@@ -67,16 +67,17 @@ jobs:
           cd android
           bundle install
       
-      # Decode and save Google Service Account credentials
-      - name: Decode Google Service Account
+      # Setup Firebase credentials
+      - name: Setup Firebase Credentials
         run: |
-          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode > ${{ github.workspace }}/google-service-account.json
+          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' > $RUNNER_TEMP/fad.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/fad.json" >> $GITHUB_ENV
       
       # Distribute to Firebase App Distribution
-      - name: Distribute to Firebase App Distribution
-        env:
-          FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/google-service-account.json
+      - name: Distribute to Firebase App Distribution   
         run: |
           cd android
           bundle exec fastlane distribute_android_dev_app_via_firebase
+        env:
+          FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
+
