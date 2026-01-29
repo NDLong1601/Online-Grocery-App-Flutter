@@ -338,7 +338,9 @@ class _AppTextFieldState extends State<AppTextField> {
         IconButton(
           onPressed: () => setState(() => _obscure = !_obscure),
           icon: Icon(
-            _obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+            _obscure
+                ? Icons.visibility_off_outlined
+                : Icons.visibility_outlined,
             color: AppColors.grayText,
           ),
         ),
@@ -346,11 +348,14 @@ class _AppTextFieldState extends State<AppTextField> {
     }
 
     // 2) Check icon (from helper)
-    if (widget.enableCheck && widget.checkValidator != null && _isValidForCheck) {
+    if (widget.enableCheck &&
+        widget.checkValidator != null &&
+        _isValidForCheck) {
       items.add(
         Padding(
           padding: const EdgeInsets.only(right: AppPadding.p8),
-          child: widget.checkIcon ??
+          child:
+              widget.checkIcon ??
               Icon(Icons.check, color: AppColors.greenAccent),
         ),
       );
@@ -360,10 +365,7 @@ class _AppTextFieldState extends State<AppTextField> {
     if (widget.trailing != null) {
       if (widget.onTapTrailing != null) {
         items.add(
-          IconButton(
-            onPressed: widget.onTapTrailing,
-            icon: widget.trailing!,
-          ),
+          IconButton(onPressed: widget.onTapTrailing, icon: widget.trailing!),
         );
       } else {
         items.add(
@@ -377,9 +379,6 @@ class _AppTextFieldState extends State<AppTextField> {
 
     if (items.isEmpty) return null;
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: items,
-    );
+    return Row(mainAxisSize: MainAxisSize.min, children: items);
   }
 }

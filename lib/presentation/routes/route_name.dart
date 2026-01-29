@@ -27,6 +27,7 @@ class RouteName {
   static const String signUpPath = '/sign-up';
   static const String orderAcceptedPath = '/order-accepted';
   static const String productDetailPath = '/product-detail';
+
   /// Define route name
   static const String splashName = 'splash';
   static const String loginName = 'login';

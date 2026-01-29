@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - feature/*
 
 jobs:
   build:
@@ -46,6 +47,8 @@ jobs:
       # Run Flutter analyze
       - name: Analyze code
         run: flutter analyze
+
+      # Run tests
       
       # Build APK with dev flavor
       - name: Build Android APK (Dev)

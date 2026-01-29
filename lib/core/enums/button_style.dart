@@ -10,5 +10,4 @@ enum AppButtonVariant {
 
   /// Nút social (Google/Facebook)
   social,
-
 }
