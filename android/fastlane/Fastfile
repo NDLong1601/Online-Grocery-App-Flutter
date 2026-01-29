@@ -1,0 +1,32 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+FIREBASE_ANDROID_APP_ID = ENV["FIREBASE_ANDROID_APP_ID"]
+GOOGLE_APPLICATION_CREDENTIALS = ENV["GOOGLE_APPLICATION_CREDENTIALS"]
+
+platform :android do
+  desc "Distribute Android dev app to Firebase App Distribution"
+  lane :distribute_android_dev_app_via_firebase do    
+    firebase_app_distribution(
+      app: FIREBASE_ANDROID_APP_ID,
+      android_artifact_path: "../build/app/outputs/flutter-apk/app-dev-release.apk",
+      groups_file: "../app_distribution/group.txt",
+      release_notes_file: "../app_distribution/release_note.txt",
+      service_credentials_file: GOOGLE_APPLICATION_CREDENTIALS,
+    )
+  end
+end

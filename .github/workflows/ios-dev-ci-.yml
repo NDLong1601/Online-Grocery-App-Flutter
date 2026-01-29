@@ -1,52 +1,52 @@
-name: iOS Dev CI
+# name: iOS Dev CI
 
-on:
-  pull_request:
-    branches:
-      - main
-      - develop
+# on:
+#   pull_request:
+#     branches:
+#       - main
+#       - develop
 
-jobs:
-  build:
-    name: Build iOS Dev App
-    runs-on: macos-latest
+# jobs:
+#   build:
+#     name: Build iOS Dev App
+#     runs-on: macos-latest
     
-    steps:
-      # Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
+#     steps:
+#       # Checkout repository
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
       
-      # Setup Flutter
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.35.7'
-          channel: 'stable'
-          cache: true
+#       # Setup Flutter
+#       - name: Setup Flutter
+#         uses: subosito/flutter-action@v2
+#         with:
+#           flutter-version: '3.35.7'
+#           channel: 'stable'
+#           cache: true
       
-      # Install dependencies
-      - name: Install dependencies
-        run: flutter pub get
+#       # Install dependencies
+#       - name: Install dependencies
+#         run: flutter pub get
       
-      # Code generation with build_runner
-      - name: Run build_runner
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+#       # Code generation with build_runner
+#       - name: Run build_runner
+#         run: flutter pub run build_runner build --delete-conflicting-outputs
       
-      # Check code formatting
-      - name: Check formatting
-        run: dart format --set-exit-if-changed .
+#       # Check code formatting
+#       - name: Check formatting
+#         run: dart format --set-exit-if-changed .
       
-      # Run Flutter analyze
-      - name: Analyze code
-        run: flutter analyze
+#       # Run Flutter analyze
+#       - name: Analyze code
+#         run: flutter analyze
       
-      # Install CocoaPods dependencies
-      - name: Install CocoaPods dependencies
-        run: |
-          cd ios
-          pod install
-          cd ..
+#       # Install CocoaPods dependencies
+#       - name: Install CocoaPods dependencies
+#         run: |
+#           cd ios
+#           pod install
+#           cd ..
       
-      # Build iOS app with dev flavor
-      - name: Build iOS App (Dev)
-        run: flutter build ios --release --flavor dev -t lib/main_dev.dart --no-codesign
+#       # Build iOS app with dev flavor
+#       - name: Build iOS App (Dev)
+#         run: flutter build ios --release --flavor dev -t lib/main_dev.dart --no-codesign
