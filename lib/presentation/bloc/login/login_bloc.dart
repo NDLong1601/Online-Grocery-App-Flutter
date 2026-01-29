@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:online_groceries_store_app/di/injector.dart';
 import 'package:online_groceries_store_app/domain/core/app_logger.dart';
 import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart';
 import 'package:online_groceries_store_app/domain/usecase/login_user_usecase.dart';
