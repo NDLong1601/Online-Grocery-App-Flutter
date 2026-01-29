@@ -32,8 +32,7 @@ class LoginEntity extends Equatable {
   final int id;
   final String username;
   final String email;
-  final String firstName;
-  final String lastName;
+  final String fullName;
   final String gender;
   final String image;
   final String accessToken;
@@ -43,8 +42,7 @@ class LoginEntity extends Equatable {
     required this.id,
     required this.username,
     required this.email,
-    required this.firstName,
-    required this.lastName,
+    required this.fullName,
     required this.gender,
     required this.image,
     required this.accessToken,
@@ -52,5 +50,5 @@ class LoginEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, username, email, firstName, lastName];
+  List<Object?> get props => [id, username, email, fullName];
 }

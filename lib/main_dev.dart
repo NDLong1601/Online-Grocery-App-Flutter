@@ -1,3 +1,4 @@
+import 'package:chottu_link/chottu_link.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:online_groceries_store_app/app.dart';
@@ -17,6 +18,13 @@ import 'package:online_groceries_store_app/di/injector.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies(env: dev.name);
+
+  try {
+    await ChottuLink.init(apiKey: "c_app_HVA1aQuhwhsY58hbCohVk8JMToIbC6V1");
+    debugPrint("✅ ChottuLink initialized successfully.");
+  } catch (e) {
+    debugPrint("❌ ChottuLink initialization error: $e");
+  }
 
   runApp(const MyApp());
 }

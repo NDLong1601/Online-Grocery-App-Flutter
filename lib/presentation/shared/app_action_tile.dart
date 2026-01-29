@@ -19,6 +19,10 @@ class AppActionTile extends StatelessWidget {
   /// Right custom widget (ví dụ: payment icon)
   final Widget? valueWidget;
 
+  /// Custom trailing widget - replaces value, valueWidget and chevron entirely
+  /// Use this for Switch, Checkbox, or any custom right-side widget
+  final Widget? trailing;
+
   /// Show chevron icon at right
   final bool showChevron;
 
@@ -47,6 +51,7 @@ class AppActionTile extends StatelessWidget {
     this.leading,
     this.value,
     this.valueWidget,
+    this.trailing,
     this.showChevron = true,
     this.showDivider = true,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -114,15 +119,19 @@ class AppActionTile extends StatelessWidget {
                   ),
                 ),
 
-                if (valueWidget != null) valueWidget!,
-                if (value != null && value!.trim().isNotEmpty) ...[
-                  if (valueWidget != null) const SizedBox(width: 8),
-                  AppText(text: value!, style: vStyle),
-                ],
-
-                if (showChevron) ...[
-                  const SizedBox(width: 10),
-                  const Icon(Icons.chevron_right, color: AppColors.darkText),
+                // If trailing is provided, use it instead of value/valueWidget/chevron
+                if (trailing != null)
+                  trailing!
+                else ...[
+                  if (valueWidget != null) valueWidget!,
+                  if (value != null && value!.trim().isNotEmpty) ...[
+                    if (valueWidget != null) const SizedBox(width: 8),
+                    AppText(text: value!, style: vStyle),
+                  ],
+                  if (showChevron) ...[
+                    const SizedBox(width: 10),
+                    const Icon(Icons.chevron_right, color: AppColors.darkText),
+                  ],
                 ],
               ],
             ),

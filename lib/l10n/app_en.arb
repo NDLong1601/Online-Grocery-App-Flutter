@@ -1,4 +1,14 @@
 {
     "@@locale": "en",
-    "getStarted": "Get Started"
+    "getStarted": "Get Started",
+    "orders": "Orders",
+    "myDetails": "My Details",
+    "deliveryAddress": "Delivery Address",
+    "paymentMethods": "Payment Methods",
+    "promoCard": "Promo Card",
+    "notifications": "Notifications",
+    "help": "Help",
+    "about": "About",
+    "logOut": "Log Out",
+    "changeLanguage": "Change Language"
 }

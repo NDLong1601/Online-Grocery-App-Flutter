@@ -23,6 +23,7 @@ class CartDto {
     required this.totalQuantity,
   });
 
-  factory CartDto.fromJson(Map<String, dynamic> json) => _$CartDtoFromJson(json);
+  factory CartDto.fromJson(Map<String, dynamic> json) =>
+      _$CartDtoFromJson(json);
   Map<String, dynamic> toJson() => _$CartDtoToJson(this);
 }

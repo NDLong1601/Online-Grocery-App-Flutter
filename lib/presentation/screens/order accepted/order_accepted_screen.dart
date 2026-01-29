@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:online_groceries_store_app/core/assets_gen/assets.gen.dart';
 import 'package:online_groceries_store_app/core/enums/button_style.dart';
 import 'package:online_groceries_store_app/presentation/shared/app_background.dart';
@@ -42,7 +43,7 @@ class OrderAcceptedScreen extends StatelessWidget {
 
                 AppText(
                   text:
-                      'Your items has been placed and is on\nit\'s way to being processed',
+                      'Your items have been placed and is on\nit\'s way to being processed',
                   style: AppTextstyle.tsRegularSize16.copyWith(
                     color: AppColors.grayText,
                   ),
@@ -55,7 +56,7 @@ class OrderAcceptedScreen extends StatelessWidget {
                 AppButton(
                   text: 'Track Order',
                   onPressed: () {
-                    // context.goNamed(RouteName.bottomTabName);
+                    context.pop();
                   },
                   variant: AppButtonVariant.primary,
                 ),

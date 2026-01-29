@@ -57,7 +57,7 @@ class _CheckoutBottomSheet extends StatelessWidget {
                 ),
                 InkWell(
                   borderRadius: BorderRadius.circular(20),
-                  onTap: () => Navigator.pop(context),
+                  onTap: () => context.pop(),
                   child: const Padding(
                     padding: EdgeInsets.all(6),
                     child: Icon(Icons.close, size: 22),
@@ -111,7 +111,7 @@ class _CheckoutBottomSheet extends StatelessWidget {
 
             AppActionTile(
               title: 'Total Cost',
-              value: '\$13.97',
+              value: '\$${total.toStringAsFixed(2)}',
               isBoldValue: true,
               titleStyle: AppTextstyle.tsSemiboldSize18.copyWith(
                 color: AppColors.grayText,
@@ -160,7 +160,7 @@ class _CheckoutBottomSheet extends StatelessWidget {
             AppButton(
               text: 'Place Order',
               onPressed: () async {
-                Navigator.pop(context);
+                context.pop();
                 context.goNamed(RouteName.orderAcceptedName);
               },
               height: 67,

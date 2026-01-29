@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:online_groceries_store_app/core/assets_gen/assets.gen.dart';
 import 'package:online_groceries_store_app/core/enums/textfield_style.dart';
 import 'package:online_groceries_store_app/di/injector.dart';
+import 'package:online_groceries_store_app/domain/core/app_logger.dart';
 import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart';
 import 'package:online_groceries_store_app/domain/usecase/login_user_usecase.dart';
 import 'package:online_groceries_store_app/presentation/bloc/login/login_bloc.dart';
@@ -29,6 +30,7 @@ class LoginScreen extends StatelessWidget {
         getIt<LoginUserUsecase>(),
         getIt<ILocalStorage>(),
         FailureMapper(context),
+        getIt<AppLogger>(),
       ),
       child: const _LoginScreenView(),
     );
@@ -89,12 +91,12 @@ class _LoginScreenViewState extends State<_LoginScreenView> {
           }
         },
         builder: (context, state) {
-          return AppBackground(
-            padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
-            child: SafeArea(
-              child: Stack(
-                children: [
-                  SingleChildScrollView(
+          return Stack(
+            children: [
+              AppBackground(
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
+                child: SafeArea(
+                  child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -110,7 +112,7 @@ class _LoginScreenViewState extends State<_LoginScreenView> {
                         const SizedBox(height: 100),
 
                         AppText(
-                          text: 'Loging',
+                          text: 'Login',
                           style: AppTextstyle.tsSemiboldSize26.copyWith(
                             color: AppColors.darkText,
                           ),
@@ -188,7 +190,7 @@ class _LoginScreenViewState extends State<_LoginScreenView> {
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: "Singup",
+                                    text: "Sign up",
                                     style: AppTextstyle.tsSemiboldSize14
                                         .copyWith(color: AppColors.greenAccent),
                                   ),
@@ -202,18 +204,17 @@ class _LoginScreenViewState extends State<_LoginScreenView> {
                       ],
                     ),
                   ),
-
-                  if (state.isLoading)
-                    Positioned.fill(
-                      child: Container(
-                        color: Colors.black.withValues(alpha: 0.08),
-                        alignment: Alignment.center,
-                        child: const CircularProgressIndicator(),
-                      ),
-                    ),
-                ],
+                ),
               ),
-            ),
+              if (state.isLoading)
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(),
+                  ),
+                ),
+            ],
           );
         },
       ),

@@ -1,0 +1,55 @@
+# name: Android Dev CI
+
+# on:
+#   pull_request:
+#     branches:
+#       - main
+#       - develop
+#       - feature/*
+
+# jobs:
+#   build:
+#     name: Build Android Dev APK
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#       # Checkout repository
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+      
+#       # Setup Java for Android build
+#       - name: Setup Java
+#         uses: actions/setup-java@v4
+#         with:
+#           distribution: 'temurin'
+#           java-version: '17'
+      
+#       # Setup Flutter
+#       - name: Setup Flutter
+#         uses: subosito/flutter-action@v2
+#         with:
+#           flutter-version: '3.35.7'
+#           channel: 'stable'
+#           cache: true
+      
+#       # Install dependencies
+#       - name: Install dependencies
+#         run: flutter pub get
+      
+#       # Code generation with build_runner
+#       - name: Run build_runner
+#         run: flutter pub run build_runner build --delete-conflicting-outputs
+      
+#       # Check code formatting
+#       - name: Check formatting
+#         run: dart format --set-exit-if-changed .
+      
+#       # Run Flutter analyze
+#       - name: Analyze code
+#         run: flutter analyze
+
+#       # Run tests
+      
+#       # Build APK with dev flavor
+#       - name: Build Android APK (Dev)
+#         run: flutter build apk --release --flavor dev -t lib/main_dev.dart

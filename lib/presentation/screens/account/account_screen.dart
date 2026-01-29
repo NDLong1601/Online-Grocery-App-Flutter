@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:online_groceries_store_app/core/assets_gen/assets.gen.dart';
 import 'package:online_groceries_store_app/core/enums/button_style.dart';
+import 'package:online_groceries_store_app/core/extensions/context_extension.dart';
+import 'package:online_groceries_store_app/presentation/bloc/locale/locale_bloc.dart';
+import 'package:online_groceries_store_app/presentation/bloc/locale/locale_event.dart';
+import 'package:online_groceries_store_app/presentation/bloc/locale/locale_state.dart';
 import 'package:online_groceries_store_app/presentation/shared/app_action_tile.dart';
 import 'package:online_groceries_store_app/presentation/shared/app_button.dart';
 import 'package:online_groceries_store_app/presentation/theme/app_colors.dart';
@@ -17,8 +22,6 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullName = '${user.firstName} ${user.lastName}'.trim();
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -46,7 +49,7 @@ class AccountScreen extends StatelessWidget {
                           children: [
                             Flexible(
                               child: Text(
-                                fullName.isEmpty ? user.username : fullName,
+                                user.fullName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextstyle.tsRegularSize20.copyWith(
@@ -85,32 +88,32 @@ class AccountScreen extends StatelessWidget {
               child: ListView(
                 children: [
                   AppActionTile(
-                    title: 'Orders',
+                    title: context.appLocalizations!.orders,
                     leading: Assets.icons.icOrders.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
                   AppActionTile(
-                    title: 'My Details',
+                    title: context.appLocalizations!.myDetails,
                     leading: Assets.icons.icDetail.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
                   AppActionTile(
-                    title: 'Delivery Address',
+                    title: context.appLocalizations!.deliveryAddress,
                     leading: Assets.icons.icAddress.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
                   AppActionTile(
-                    title: 'Payment Methods',
+                    title: context.appLocalizations!.paymentMethods,
                     leading: Assets.icons.icPayment.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
                   AppActionTile(
-                    title: 'Promo Card',
+                    title: context.appLocalizations!.promoCard,
                     leading: Assets.icons.icPromo.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
                   AppActionTile(
-                    title: 'Notifecations',
+                    title: context.appLocalizations!.notifications,
                     leading: Assets.icons.icNotifications.svg(
                       width: 20,
                       height: 20,
@@ -118,14 +121,40 @@ class AccountScreen extends StatelessWidget {
                     onTap: () {},
                   ),
                   AppActionTile(
-                    title: 'Help',
+                    title: context.appLocalizations!.help,
                     leading: Assets.icons.icHelp.svg(width: 20, height: 20),
                     onTap: () {},
                   ),
                   AppActionTile(
-                    title: 'About ',
+                    title: context.appLocalizations!.about,
                     leading: Assets.icons.icAbout.svg(width: 20, height: 20),
                     onTap: () {},
+                  ),
+                  AppActionTile(
+                    leading: Icon(
+                      Icons.language,
+                      size: 20,
+                      color: AppColors.darkText,
+                    ),
+                    title: context.appLocalizations!.changeLanguage,
+                    titleStyle: AppTextstyle.tsSemiboldSize16,
+                    showDivider: true,
+                    trailing: BlocBuilder<LocaleBloc, LocaleState>(
+                      builder: (context, state) {
+                        final bool isEnglish = state.languageCode == 'en';
+                        return Switch(
+                          value: isEnglish,
+                          onChanged: (value) {
+                            context.read<LocaleBloc>().add(
+                              OnChangeLocaleEvent(
+                                state.languageCode == 'en' ? 'vi' : 'en',
+                                state.countryCode == 'US' ? 'VN' : 'US',
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -135,7 +164,7 @@ class AccountScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(25),
               child: AppButton(
-                text: 'Log Out',
+                text: context.appLocalizations!.logOut,
                 onPressed: () => context.goNamed(RouteName.loginName),
                 variant: AppButtonVariant.soft,
               ),

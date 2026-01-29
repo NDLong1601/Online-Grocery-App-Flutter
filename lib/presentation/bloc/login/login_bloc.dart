@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:online_groceries_store_app/di/injector.dart';
 import 'package:online_groceries_store_app/domain/core/app_logger.dart';
 import 'package:online_groceries_store_app/domain/repositories/local_storage_repository.dart';
 import 'package:online_groceries_store_app/domain/usecase/login_user_usecase.dart';
@@ -12,9 +11,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginUserUsecase _loginUsecase;
   final ILocalStorage _localStorage;
   final FailureMapper _failureMapper;
+  final AppLogger _logger;
 
-  LoginBloc(this._loginUsecase, this._localStorage, this._failureMapper)
-    : super(const LoginState()) {
+  LoginBloc(
+    this._loginUsecase,
+    this._localStorage,
+    this._failureMapper,
+    this._logger,
+  ) : super(const LoginState()) {
     on<OnLoginEvent>((event, emit) async {
       await _onLoginEvent(event, emit);
     });
@@ -48,7 +52,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
           /// save refresh token
           final accessToken = await _localStorage.getAccessToken();
-          getIt<AppLogger>().i(
+          _logger.i(
             "accessToken",
             metadata: {
               'accessToken': accessToken.fold(
@@ -57,7 +61,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               ),
             },
           );
-          emit(state.copyWith(isSuccess: true, isLoading: false, user: success));
+          emit(
+            state.copyWith(isSuccess: true, isLoading: false, user: success),
+          );
         },
       );
     } catch (e) {

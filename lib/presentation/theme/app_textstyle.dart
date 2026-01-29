@@ -121,4 +121,3 @@ class AppTextstyle {
     fontWeight: FontWeight.w400,
   );
 }
-
